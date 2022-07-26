@@ -1,6 +1,7 @@
 package com.rest.springbootemployee;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,5 +25,11 @@ public class EmployeeController {
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeesByGender(@RequestParam String gender) {
         return employeeRepository.findEmployeesByGender(gender);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Employee saveEmployee(@RequestBody Employee employee){
+        return employeeRepository.save(employee);
     }
 }

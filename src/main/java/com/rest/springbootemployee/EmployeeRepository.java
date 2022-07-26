@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Repository
@@ -36,5 +37,19 @@ public class EmployeeRepository {
         return employeeList.stream()
                 .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
+    }
+
+    public Employee save(Employee employee) {
+        employee.setId(generateId());
+        this.employeeList.add(employee);
+        return employee;
+    }
+
+    private int generateId() {
+        int maxId = employeeList.stream()
+                .mapToInt(employee -> employee.getId())
+                .max()
+                .orElse(0);
+        return maxId + 1;
     }
 }

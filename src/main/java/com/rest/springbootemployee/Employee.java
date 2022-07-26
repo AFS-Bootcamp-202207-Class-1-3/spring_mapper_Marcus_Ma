@@ -15,6 +15,9 @@ public class Employee {
         this.salary = salary;
     }
 
+    public Employee() {
+    }
+
     public int getId() {
         return id;
     }
@@ -33,5 +36,25 @@ public class Employee {
 
     public int getSalary() {
         return salary;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 }
