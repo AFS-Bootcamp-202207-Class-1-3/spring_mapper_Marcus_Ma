@@ -25,16 +25,14 @@ public class Company {
         return companyName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
 
     public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public Boolean addEmployees(List<Employee> employees){
+        employees.forEach(employee -> this.getEmployees().add(employee));
+        return true;
     }
 
 }

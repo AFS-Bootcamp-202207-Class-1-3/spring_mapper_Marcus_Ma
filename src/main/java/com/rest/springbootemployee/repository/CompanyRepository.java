@@ -59,4 +59,9 @@ public class CompanyRepository {
         companyList.add(company);
         return true;
     }
+
+    public Boolean update(int id,List<Employee> employees) {
+        findCompanyById(id).addEmployees(employees);
+        return true;
+    }
 }
