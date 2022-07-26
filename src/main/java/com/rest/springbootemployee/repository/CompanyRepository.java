@@ -64,4 +64,8 @@ public class CompanyRepository {
         findCompanyById(id).addEmployees(employees);
         return true;
     }
+
+    public Boolean delete(int id) {
+        return companyList.remove(findCompanyById(id));
+    }
 }
