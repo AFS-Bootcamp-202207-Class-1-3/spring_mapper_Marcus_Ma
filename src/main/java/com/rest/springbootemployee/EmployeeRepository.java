@@ -64,4 +64,11 @@ public class EmployeeRepository {
     public Boolean delete(int id) {
         return employeeList.remove(this.findEmployeeById(id));
     }
+
+    public List<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
+        return employeeList.stream()
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+    }
 }
