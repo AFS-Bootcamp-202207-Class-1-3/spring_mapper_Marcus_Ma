@@ -16,4 +16,8 @@ public class EmployeeController {
         return employeeRepository.findAllEmployees();
     }
 
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable int id) {
+        return employeeRepository.findEmployeeById(id);
+    }
 }
