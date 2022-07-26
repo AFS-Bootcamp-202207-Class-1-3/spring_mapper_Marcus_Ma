@@ -1,4 +1,4 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.entity;
 
 public class Employee {
     private int id;
@@ -58,7 +58,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public void update(Employee employee){
+    public void update(Employee employee) {
         this.salary = employee.getSalary();
     }
 }

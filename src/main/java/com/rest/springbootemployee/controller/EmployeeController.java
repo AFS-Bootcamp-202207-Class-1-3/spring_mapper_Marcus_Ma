@@ -1,5 +1,7 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.controller;
 
+import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,23 +31,23 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveEmployee(@RequestBody Employee employee){
+    public Employee saveEmployee(@RequestBody Employee employee) {
         return employeeRepository.save(employee);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeById(@PathVariable int id,@RequestBody Employee employee){
-        return employeeRepository.update(id,employee);
+    public Employee updateEmployeeById(@PathVariable int id, @RequestBody Employee employee) {
+        return employeeRepository.update(id, employee);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Boolean deleteEmployeeById(@PathVariable int id){
+    public Boolean deleteEmployeeById(@PathVariable int id) {
         return employeeRepository.delete(id);
     }
 
-    @GetMapping(params = {"page","pageSize"})
-    public List<Employee> getEmployeesByPageAndPageSize(@RequestParam int page,@RequestParam int pageSize) {
-        return employeeRepository.findEmployeesByPageAndPageSize(page,pageSize);
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Employee> getEmployeesByPageAndPageSize(@RequestParam int page, @RequestParam int pageSize) {
+        return employeeRepository.findEmployeesByPageAndPageSize(page, pageSize);
     }
 }
