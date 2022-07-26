@@ -1,7 +1,7 @@
 package com.rest.springbootemployee.repository;
 
 import com.rest.springbootemployee.entity.Company;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.rest.springbootemployee.exception.NotFoundCompany;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -27,5 +27,12 @@ public class CompanyRepository {
 
     public List<Company> findAllCompanies() {
         return companyList;
+    }
+
+    public Company findCompanyById(int id) {
+        return companyList.stream()
+                .filter(company -> company.getId() == id)
+                .findFirst()
+                .orElseThrow(()->new NotFoundCompany());
     }
 }
