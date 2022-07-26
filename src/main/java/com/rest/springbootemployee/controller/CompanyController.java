@@ -3,6 +3,7 @@ package com.rest.springbootemployee.controller;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,4 +36,11 @@ public class CompanyController {
     public List<Company> getCompaniesByPageAndPageSize(@RequestParam int page,@RequestParam int pageSize){
         return companyRepository.findCompaniesByPageAndPageSize(page,pageSize);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Boolean saveCompany(@RequestBody Company company){
+        return companyRepository.save(company);
+    }
+
 }

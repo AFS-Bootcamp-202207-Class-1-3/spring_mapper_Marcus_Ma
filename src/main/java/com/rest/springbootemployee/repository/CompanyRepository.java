@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Repository
 public class CompanyRepository {
     private List<Company> companyList;
-    private final EmployeeRepository employeeRepository;
 
     public CompanyRepository(EmployeeRepository employeeRepository) {
         companyList = new ArrayList<Company>() {
@@ -24,7 +23,6 @@ public class CompanyRepository {
                 add(new Company(5, "BBB", employeeRepository.findAllEmployees()));
             }
         };
-        this.employeeRepository = employeeRepository;
     }
 
     public List<Company> findAllCompanies() {
@@ -47,5 +45,18 @@ public class CompanyRepository {
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
+    }
+
+    public int generateId(){
+        return companyList.stream()
+                .mapToInt(Company::getId)
+                .max()
+                .orElse(0) + 1;
+    }
+
+    public Boolean save(Company company) {
+        company.setId(generateId());
+        companyList.add(company);
+        return true;
     }
 }
