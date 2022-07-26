@@ -57,4 +57,8 @@ public class Employee {
     public void setSalary(int salary) {
         this.salary = salary;
     }
+
+    public void update(Employee employee){
+        this.salary = employee.getSalary();
+    }
 }
