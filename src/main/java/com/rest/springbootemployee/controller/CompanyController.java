@@ -1,8 +1,8 @@
 package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.entity.Company;
+import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +27,10 @@ public class CompanyController {
     @GetMapping("/{id}")
     public Company getCompanyById(@PathVariable int id){
         return companyRepository.findCompanyById(id);
+    }
+
+    @GetMapping("/{id}/employees")
+    public List<Employee> getCompanyAllEmployeesByCompanyId(@PathVariable int id){
+        return companyRepository.findCompanyAllEmployeesByCompanyId(id);
     }
 }
