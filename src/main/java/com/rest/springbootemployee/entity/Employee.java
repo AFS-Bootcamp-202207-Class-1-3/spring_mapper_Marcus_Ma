@@ -2,9 +2,9 @@ package com.rest.springbootemployee.entity;
 
 public class Employee {
     private int id;
-    private String name;
-    private int age;
-    private String gender;
+    private final String name;
+    private final int age;
+    private final String gender;
     private int salary;
 
     public Employee(int id, String name, int age, String gender, int salary) {
@@ -15,11 +15,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee() {
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,26 +37,6 @@ public class Employee {
 
     public int getSalary() {
         return salary;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
     }
 
     public void update(Employee employee) {
