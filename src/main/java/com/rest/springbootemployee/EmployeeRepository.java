@@ -60,4 +60,8 @@ public class EmployeeRepository {
         employee1.update(employee);
         return employee1;
     }
+
+    public Boolean delete(int id) {
+        return employeeList.remove(this.findEmployeeById(id));
+    }
 }
