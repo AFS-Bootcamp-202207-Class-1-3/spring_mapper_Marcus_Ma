@@ -19,33 +19,34 @@ public class EmployeeService {
         return employeeRepository.findAllEmployees();
     }
 
-    public Employee update(int id, Employee newEmployee) {
+    public Employee update(Integer id, Employee newEmployee) {
         Employee employee = employeeRepository.findEmployeeById(id);
-        System.out.println(employee);
         return employeeRepository.update(employee, newEmployee);
     }
 
     public List<Employee> findEmployeesByGender(String gender) {
-        List<Employee> employeeList = employeeRepository.findAllEmployees();
-        return employeeList.stream()
-                .filter(employee -> employee.getGender().equals(gender))
-                .collect(Collectors.toList());
+//        List<Employee> employeeList = employeeRepository.findAllEmployees();
+//        return employeeList.stream()
+//                .filter(employee -> employee.getGender().equals(gender))
+//                .collect(Collectors.toList());
+        return employeeRepository.findEmployeesByGender(gender);
     }
 
-    public List<Employee> findEmployeesByPage(int page, int pageSize) {
-        List<Employee> employeeList = employeeRepository.findAllEmployees();
-        return employeeList.stream()
-                .skip((page - 1) * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
+    public List<Employee> findEmployeesByPage(Integer page, Integer pageSize) {
+        return employeeRepository.findEmployeesByPageAndPageSize(page,pageSize);
     }
 
-    public Employee findEmployeesById(int id) {
-        List<Employee> employeeList = employeeRepository.findAllEmployees();
-        return employeeList.stream()
-                .filter(employee -> employee.getId() == id)
-                .findFirst().orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
+    public Employee findEmployeesById(Integer id) {
+//        List<Employee> employeeList = employeeRepository.findAllEmployees();
+//        return employeeList.stream()
+//                .filter(employee -> employee.getId().equals(id))
+//                .findFirst().orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
+        return employeeRepository.findEmployeeById(id);
     }
 
 
+    public Employee addEmployee(Employee employee) {
+        employee.setId(employeeRepository.generateId());
+        return employeeRepository.save(employee);
+    }
 }

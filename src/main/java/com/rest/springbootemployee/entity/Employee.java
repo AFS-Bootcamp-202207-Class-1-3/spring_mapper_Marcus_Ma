@@ -1,14 +1,14 @@
 package com.rest.springbootemployee.entity;
 
 public class Employee {
-    private int id;
+    private Integer id;
     private String name;
-    private int age;
+    private Integer age;
     private String gender;
-    private int salary;
+    private Integer salary;
     public Employee() {
     }
-    public Employee(int id, String name, int age, String gender, int salary) {
+    public Employee(Integer id, String name, Integer age, String gender, Integer salary) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -18,11 +18,11 @@ public class Employee {
 
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -30,7 +30,7 @@ public class Employee {
         return name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -38,7 +38,7 @@ public class Employee {
         return gender;
     }
 
-    public int getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 

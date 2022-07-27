@@ -23,34 +23,34 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public Company getCompanyById(@PathVariable int id){
+    public Company getCompanyById(@PathVariable Integer id){
         return companyRepository.findCompanyById(id);
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getCompanyAllEmployeesByCompanyId(@PathVariable int id){
+    public List<Employee> getCompanyAllEmployeesByCompanyId(@PathVariable Integer id){
         return companyRepository.findCompanyAllEmployeesByCompanyId(id);
     }
 
     @GetMapping(params = {"page","pageSize"})
-    public List<Company> getCompaniesByPageAndPageSize(@RequestParam int page,@RequestParam int pageSize){
+    public List<Company> getCompaniesByPageAndPageSize(@RequestParam Integer page,@RequestParam Integer pageSize){
         return companyRepository.findCompaniesByPageAndPageSize(page,pageSize);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Company saveCompany(@RequestBody Company company){
-         return companyRepository.save(company);
+        return companyRepository.save(company);
     }
 
     @PutMapping("/{id}")
-    public Company updateCompanyById(@PathVariable int id,@RequestBody List<Employee> employees){
+    public Company updateCompanyById(@PathVariable Integer id,@RequestBody List<Employee> employees){
         return companyRepository.update(id,employees);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Boolean deleteCompanyById(@PathVariable int id){
+    public Boolean deleteCompanyById(@PathVariable Integer id){
         return companyRepository.delete(id);
     }
 }

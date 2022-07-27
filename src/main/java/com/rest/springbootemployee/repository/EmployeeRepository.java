@@ -29,7 +29,7 @@ public class EmployeeRepository {
         return employeeList;
     }
 
-    public Employee findEmployeeById(int id) {
+    public Employee findEmployeeById(Integer id) {
         return employeeList.stream()
                 .filter(employee -> employee.getId() == id)
                 .findFirst().orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
@@ -42,12 +42,11 @@ public class EmployeeRepository {
     }
 
     public Employee save(Employee employee) {
-        employee.setId(generateId());
         this.employeeList.add(employee);
         return employee;
     }
 
-    private int generateId() {
+    public Integer generateId() {
         int maxId = employeeList.stream()
                 .mapToInt(Employee::getId)
                 .max()
@@ -60,11 +59,11 @@ public class EmployeeRepository {
         return oldEmployee;
     }
 
-    public Boolean delete(int id) {
-        return employeeList.remove(this.findEmployeeById(id));
+    public void delete(Integer id) {
+        employeeList.remove(this.findEmployeeById(id));
     }
 
-    public List<Employee> findEmployeesByPageAndPageSize(int page, int pageSize) {
+    public List<Employee> findEmployeesByPageAndPageSize(Integer page, Integer pageSize) {
         return employeeList.stream()
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)

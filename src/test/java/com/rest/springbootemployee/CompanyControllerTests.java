@@ -91,8 +91,8 @@ public class CompanyControllerTests {
 
         // when & then
         client.perform(MockMvcRequestBuilders.post("/companies")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(newCompany))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newCompany))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("test"))
@@ -157,8 +157,8 @@ public class CompanyControllerTests {
                 "]";
 //        then
         client.perform(MockMvcRequestBuilders.put("/companies/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(employee))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employee))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))

@@ -5,22 +5,22 @@ import java.util.List;
 public class Company {
     private  String companyName;
     private  List<Employee> employees;
-    private int id;
+    private Integer id;
 
     public Company() {
     }
 
-    public Company(int id, String companyName, List<Employee> employees) {
+    public Company(Integer id, String companyName, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employees = employees;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

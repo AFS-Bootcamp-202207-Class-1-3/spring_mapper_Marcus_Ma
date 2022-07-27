@@ -55,8 +55,8 @@ class EmployeeControllerTests {
 
 		// when & then
 		client.perform(MockMvcRequestBuilders.post("/employees")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(newEmployee))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(newEmployee))
 				.andExpect(MockMvcResultMatchers.status().isCreated())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.name").value("zs"))
@@ -109,8 +109,8 @@ class EmployeeControllerTests {
 				"}";
 //        then
 		client.perform(MockMvcRequestBuilders.put("/employees/1")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(employee))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(employee))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.age").value(20))
