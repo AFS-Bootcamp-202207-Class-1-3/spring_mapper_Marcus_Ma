@@ -54,4 +54,18 @@ public class CompanyServiceTest {
         // then
         assertThat(actualCompany,equalTo(company));
     }
+    @Test
+    void should_return_employees_when_findCompanyEmployeesById_given_id(){
+        // given
+        int id = 1;
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        Company company = new Company(1, "spring",employees);
+        given(companyRepository.findCompanyAllEmployeesByCompanyId(id)).willReturn(employees);
+        // when
+        List<Employee> actualEmployees = companyService.findCompanyAllEmployeesByCompanyId(id);
+        // then
+        assertThat(actualEmployees,equalTo(employees));
+    }
+
 }
