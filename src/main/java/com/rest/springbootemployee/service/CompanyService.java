@@ -38,4 +38,9 @@ public class CompanyService {
         company.setId(companyRepository.generateId());
         return companyRepository.save(company);
     }
+
+    public Company update(int id, List<Employee> newEmployee) {
+        Company company = companyRepository.findCompanyById(id);
+        return companyRepository.update(company,newEmployee);
+    }
 }

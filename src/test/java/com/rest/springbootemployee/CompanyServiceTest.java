@@ -105,4 +105,21 @@ public class CompanyServiceTest {
         // then
         assertThat(actualCompany,equalTo(company));
     }
+    @Test
+    void should_return_updatedCompany_when_update_given_company(){
+        // given
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        Company oldCompany = new Company(1, "spring",employees);
+        List<Employee> newEmployee = new ArrayList<>();
+        employees.add(new Employee(2, "test", 20, "Male", 11000));
+        given(companyRepository.findCompanyById(1)).willReturn(oldCompany);
+//        service
+        given(companyRepository.update(oldCompany, newEmployee)).willCallRealMethod();
+        // when
+        companyService.update(1, newEmployee);
+        // then
+        verify(companyRepository).update(oldCompany, newEmployee);
+//        assertThat(updatedEmployee.getSalary(), equalTo(newEmployee.getSalary()));
+    }
 }

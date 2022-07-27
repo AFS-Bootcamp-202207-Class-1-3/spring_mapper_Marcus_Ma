@@ -3,6 +3,8 @@ package com.rest.springbootemployee.controller;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("companies")
 public class CompanyController {
+    @Autowired
+    private CompanyService companyService;
     private final CompanyRepository companyRepository;
 
     public CompanyController(CompanyRepository companyRepository) {
@@ -40,12 +44,12 @@ public class CompanyController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Company saveCompany(@RequestBody Company company){
-        return companyRepository.save(company);
+        return companyService.addCompany(company);
     }
 
     @PutMapping("/{id}")
     public Company updateCompanyById(@PathVariable Integer id,@RequestBody List<Employee> employees){
-        return companyRepository.update(id,employees);
+        return companyService.update(id,employees);
     }
 
     @DeleteMapping("/{id}")

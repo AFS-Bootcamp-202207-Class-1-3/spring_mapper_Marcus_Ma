@@ -59,8 +59,7 @@ public class CompanyRepository {
         return company;
     }
 
-    public Company update(Integer id,List<Employee> employees) {
-        Company company = findCompanyById(id);
+    public Company update(Company company,List<Employee> employees) {
         company.addEmployees(employees);
         return company;
     }
