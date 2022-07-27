@@ -13,9 +13,6 @@ import java.util.stream.Collectors;
 public class CompanyRepository {
     private List<Company> companyList;
 
-    public CompanyRepository() {
-    }
-
     public CompanyRepository(EmployeeRepository employeeRepository) {
         companyList = new ArrayList<Company>() {
             {
@@ -34,7 +31,7 @@ public class CompanyRepository {
 
     public Company findCompanyById(Integer id) {
         return companyList.stream()
-                .filter(company -> company.getId() == id)
+                .filter(company -> company.getId().equals(id))
                 .findFirst()
                 .orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
     }

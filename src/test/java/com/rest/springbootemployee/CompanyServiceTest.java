@@ -3,6 +3,7 @@ package com.rest.springbootemployee;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.EmployeeRepository;
 import com.rest.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(SpringExtension.class)
 public class CompanyServiceTest {
     @Spy
-    CompanyRepository companyRepository;
+    CompanyRepository companyRepository = new CompanyRepository(new EmployeeRepository());
     @InjectMocks
     CompanyService companyService;
     @Test
@@ -39,5 +40,18 @@ public class CompanyServiceTest {
         // then
         assertThat(actualCompanies,hasSize(1));
         assertThat(actualCompanies.get(0),equalTo(company));
+    }
+    @Test
+    void should_return_company_when_findCompanyById_given_id(){
+        // given
+        int id = 1;
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        Company company = new Company(1, "spring",employees);
+        given(companyRepository.findCompanyById(id)).willReturn(company);
+        // when
+        Company actualCompany = companyService.findCompanyById(id);
+        // then
+        assertThat(actualCompany,equalTo(company));
     }
 }
