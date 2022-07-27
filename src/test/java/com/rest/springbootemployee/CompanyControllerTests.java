@@ -185,5 +185,20 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(5))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].companyName").value("testD"));
     }
+    @Test
+    void should_return_employees_when_getCompanyAllEmployeesByCompanyId_given_Id() throws Exception {
+        // given
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        employees.add(new Employee(2, "Lily", 20, "Female", 11000));
+        companyRepository.save(new Company(1, "spring",employees));
 
+        // when then
+        client.perform(MockMvcRequestBuilders.get("/companies/1/employees"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Lily"));
+
+    }
 }
