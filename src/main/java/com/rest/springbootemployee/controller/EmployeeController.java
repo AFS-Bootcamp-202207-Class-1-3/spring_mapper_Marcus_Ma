@@ -2,6 +2,8 @@ package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +13,8 @@ import java.util.List;
 @RequestMapping("employees")
 public class EmployeeController {
     private final EmployeeRepository employeeRepository;
-
+    @Autowired
+    private EmployeeService employeeService;
     public EmployeeController(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
@@ -40,7 +43,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public Employee updateEmployeeById(@PathVariable int id, @RequestBody Employee employee) {
-        return employeeRepository.update(id, employee);
+        return employeeService.update(id, employee);
     }
 
     @DeleteMapping("/{id}")

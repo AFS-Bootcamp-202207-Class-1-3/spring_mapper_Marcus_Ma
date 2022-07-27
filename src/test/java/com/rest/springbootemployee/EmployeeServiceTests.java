@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 public class EmployeeServiceTests {
@@ -37,5 +38,18 @@ public class EmployeeServiceTests {
         assertThat(actualEmployees,hasSize(1));
         assertThat(actualEmployees.get(0),equalTo(employee));
     }
-
+    @Test
+    void should_return_updatedEmployee_when_update_given_employee(){
+        // given
+        Employee oldEmployee = new Employee(1, "Lily", 20, "Female", 11000);
+        Employee newEmployee = new Employee(1, "Lily", 20, "Female", 12000);
+        given(employeeRepository.findEmployeeById(1)).willReturn(oldEmployee);
+//        service
+        given(employeeRepository.update(oldEmployee, newEmployee)).willCallRealMethod();
+        // when
+        employeeService.update(1, newEmployee);
+        // then
+        verify(employeeRepository).update(oldEmployee, newEmployee);
+//        assertThat(updatedEmployee.getSalary(), equalTo(newEmployee.getSalary()));
+    }
 }

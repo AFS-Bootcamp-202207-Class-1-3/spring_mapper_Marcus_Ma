@@ -54,13 +54,9 @@ public class EmployeeRepository {
         return maxId + 1;
     }
 
-    public Employee update(int id, Employee employee) {
-        Employee employee1 = employeeList.stream()
-                .filter(employee2 -> employee2.getId() == id)
-                .findFirst()
-                .orElseThrow(NotFoundEmployee::new);
-        employee1.update(employee);
-        return employee1;
+    public Employee update(Employee oldEmployee, Employee newEmployee) {
+        oldEmployee.update(newEmployee);
+        return oldEmployee;
     }
 
     public Boolean delete(int id) {
