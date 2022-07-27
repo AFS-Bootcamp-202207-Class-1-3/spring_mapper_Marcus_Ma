@@ -49,4 +49,8 @@ public class EmployeeService {
         employee.setId(employeeRepository.generateId());
         return employeeRepository.save(employee);
     }
+
+    public void deleteEmployeeById(int id) {
+        employeeRepository.delete(id);
+    }
 }

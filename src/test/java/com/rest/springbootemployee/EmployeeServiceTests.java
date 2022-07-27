@@ -112,5 +112,17 @@ public class EmployeeServiceTests {
         // then
         assertThat(actualEmployee,equalTo(employee));
     }
+
+    @Test
+    void should_return_noContent_when_delete_employee_given_id(){
+        // given
+        int id = 1;
+        // when
+        employeeService.deleteEmployeeById(id);
+        // then
+        verify(employeeRepository).delete(id);
+
+    }
+
 }
 
