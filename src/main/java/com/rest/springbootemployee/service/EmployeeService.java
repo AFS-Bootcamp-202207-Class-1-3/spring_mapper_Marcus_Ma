@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+
     public List<Employee> findAll() {
         return employeeRepository.findAllEmployees();
     }
@@ -30,7 +31,11 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeesByPage(int page, int pageSize) {
-        return employeeRepository.findEmployeesByPageAndPageSize(page,pageSize);
+        List<Employee> employeeList = employeeRepository.findAllEmployees();
+        return employeeList.stream()
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
     }
 
 }
