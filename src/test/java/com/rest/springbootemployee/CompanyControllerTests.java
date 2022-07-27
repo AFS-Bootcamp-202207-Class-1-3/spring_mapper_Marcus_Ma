@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class CompanyControllerTest {
+public class CompanyControllerTests {
     @Autowired
     MockMvc client;
     @Autowired
@@ -163,6 +163,27 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(3)));
+    }
+    @Test
+    void should_return_Companies_when_getEmployeesByPage_given_page_pageSize() throws Exception {
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        companyRepository.save(new Company(1, "spring",employees));
+        companyRepository.save(new Company(2, "testA",employees));
+        companyRepository.save(new Company(3, "testB",employees));
+        companyRepository.save(new Company(4, "testC",employees));
+        companyRepository.save(new Company(5, "testD",employees));
+        client.perform(MockMvcRequestBuilders.get("/companies?page=1&pageSize=3"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"));
+
+        client.perform(MockMvcRequestBuilders.get("/companies?page=2&pageSize=3"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].companyName").value("testD"));
     }
 
 }
