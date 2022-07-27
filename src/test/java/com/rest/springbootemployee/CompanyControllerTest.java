@@ -108,9 +108,11 @@ public class CompanyControllerTest {
 
     @Test
     void should_return_rightCompany_when_getCompanyById_given_Id() throws Exception {
+//        given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
         companyRepository.save(new Company(1, "spring",employees));
+//        when then
         client.perform(MockMvcRequestBuilders.get("/companies/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
@@ -118,5 +120,19 @@ public class CompanyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(1)));
         client.perform(MockMvcRequestBuilders.get("/companies/2"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    @Test
+    void should_return_none_when_deleteCompanyById_given_Id() throws Exception {
+
+        // given & when
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        companyRepository.save(new Company(1, "spring",employees));
+        client.perform(MockMvcRequestBuilders.delete("/companies/1"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        // should
+        List<Company> companies = companyRepository.findAllCompanies();
+        assertThat(companies, hasSize(0));
     }
 }
