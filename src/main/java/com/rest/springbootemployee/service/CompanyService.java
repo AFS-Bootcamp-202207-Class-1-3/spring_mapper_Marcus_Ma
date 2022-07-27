@@ -29,4 +29,8 @@ public class CompanyService {
     public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
         return companyRepository.findCompaniesByPageAndPageSize(page,pageSize);
     }
+
+    public void deleteCompanyById(int id) {
+        companyRepository.delete(id);
+    }
 }

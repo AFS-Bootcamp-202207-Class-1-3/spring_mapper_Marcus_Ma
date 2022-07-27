@@ -18,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 public class CompanyServiceTest {
@@ -83,4 +84,14 @@ public class CompanyServiceTest {
         assertThat(actualCompanies,hasSize(1));
         assertThat(actualCompanies.get(0),equalTo(company));
     }
+    @Test
+    void should_return_noContent_when_deleteCompanyById_given_id(){
+        // given
+        int id = 1;
+        // when
+        companyService.deleteCompanyById(id);
+        // then
+        verify(companyRepository).delete(id);
+    }
+
 }
