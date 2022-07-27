@@ -39,8 +39,8 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Boolean saveCompany(@RequestBody Company company){
-        return companyRepository.save(company);
+    public Company saveCompany(@RequestBody Company company){
+         return companyRepository.save(company);
     }
 
     @PutMapping("/{id}")

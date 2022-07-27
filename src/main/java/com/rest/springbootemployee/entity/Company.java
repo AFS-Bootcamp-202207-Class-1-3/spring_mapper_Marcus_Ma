@@ -3,9 +3,12 @@ package com.rest.springbootemployee.entity;
 import java.util.List;
 
 public class Company {
-    private final String companyName;
-    private final List<Employee> employees;
+    private  String companyName;
+    private  List<Employee> employees;
     private int id;
+
+    public Company() {
+    }
 
     public Company(int id, String companyName, List<Employee> employees) {
         this.id = id;

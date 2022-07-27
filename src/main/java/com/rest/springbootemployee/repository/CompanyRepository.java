@@ -54,10 +54,10 @@ public class CompanyRepository {
                 .orElse(0) + 1;
     }
 
-    public Boolean save(Company company) {
+    public Company save(Company company) {
         company.setId(generateId());
         companyList.add(company);
-        return true;
+        return company;
     }
 
     public Boolean update(int id,List<Employee> employees) {
@@ -67,5 +67,9 @@ public class CompanyRepository {
 
     public Boolean delete(int id) {
         return companyList.remove(findCompanyById(id));
+    }
+
+    public void clearAll() {
+        companyList.clear();
     }
 }
