@@ -96,5 +96,25 @@ class EmployeeControllerTests {
 		List<Employee> employees = employeeRepository.findAllEmployees();
 		assertThat(employees, hasSize(0));
 	}
-
+	@Test
+	void should_return_rightEmployee_when_updateEmployee_given_employee() throws Exception {
+		// given & when
+		employeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
+		String employee = "{\n" +
+				"    \"id\": 12,\n" +
+				"    \"name\": \"zs\",\n" +
+				"    \"age\": 20,\n" +
+				"    \"gender\": \"Male\",\n" +
+				"    \"salary\": 10000\n" +
+				"}";
+//        then
+		client.perform(MockMvcRequestBuilders.put("/employees/1")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(employee))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.age").value(20))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("Female"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(10000));
+	}
 }
