@@ -119,7 +119,7 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(1)));
         client.perform(MockMvcRequestBuilders.get("/companies/2"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
     @Test
     void should_return_none_when_deleteCompanyById_given_Id() throws Exception {

@@ -82,7 +82,7 @@ class EmployeeControllerTests {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.gender").value("Female"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(11000));
 		client.perform(MockMvcRequestBuilders.get("/employees/2"))
-				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+				.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 	@Test
 	void should_return_none_when_deleteEmployeeById_given_a_Id() throws Exception {

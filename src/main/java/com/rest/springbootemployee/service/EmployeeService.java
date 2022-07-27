@@ -1,6 +1,8 @@
 package com.rest.springbootemployee.service;
 
+import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.exception.NotFoundException;
 import com.rest.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,5 +39,13 @@ public class EmployeeService {
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
+
+    public Employee findEmployeesById(int id) {
+        List<Employee> employeeList = employeeRepository.findAllEmployees();
+        return employeeList.stream()
+                .filter(employee -> employee.getId() == id)
+                .findFirst().orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
+    }
+
 
 }

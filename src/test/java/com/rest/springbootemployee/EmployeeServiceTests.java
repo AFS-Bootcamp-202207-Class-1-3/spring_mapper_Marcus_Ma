@@ -86,9 +86,24 @@ public class EmployeeServiceTests {
         given(employeeRepository.findAllEmployees()).willReturn(employees);
         // when
         List<Employee> actualEmployees = employeeService.findEmployeesByPage(2,3);
-
         // then
         assertThat(actualEmployees,hasSize(2));
         assertThat(actualEmployees.get(1),equalTo(employee5));
     }
+    @Test
+    void should_return_employee_when_findEmployeesById_given_Id(){
+        // given
+        int id = 2;
+        Employee employee1 = new Employee(1, "Lily", 20, "Female", 11000);
+        Employee employee2 = new Employee(2, "Lily", 20, "Male", 10000);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(employee1);
+        employees.add(employee2);
+        given(employeeRepository.findAllEmployees()).willReturn(employees);
+        // when
+        Employee actualEmployee = employeeService.findEmployeesById(id);
+        // then
+        assertThat(actualEmployee,equalTo(employee2));
+    }
+
 }
