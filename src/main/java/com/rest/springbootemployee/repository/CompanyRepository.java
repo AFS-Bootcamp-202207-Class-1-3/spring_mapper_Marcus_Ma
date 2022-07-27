@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 public class CompanyRepository {
     private List<Company> companyList;
 
+    public CompanyRepository() {
+    }
+
     public CompanyRepository(EmployeeRepository employeeRepository) {
         companyList = new ArrayList<Company>() {
             {
