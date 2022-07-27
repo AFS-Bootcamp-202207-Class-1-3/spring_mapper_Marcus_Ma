@@ -33,4 +33,9 @@ public class CompanyService {
     public void deleteCompanyById(int id) {
         companyRepository.delete(id);
     }
+
+    public Company addCompany(Company company) {
+        company.setId(companyRepository.generateId());
+        return companyRepository.save(company);
+    }
 }

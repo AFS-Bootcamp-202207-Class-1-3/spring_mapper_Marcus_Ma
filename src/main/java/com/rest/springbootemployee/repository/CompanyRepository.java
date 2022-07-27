@@ -55,7 +55,6 @@ public class CompanyRepository {
     }
 
     public Company save(Company company) {
-        company.setId(generateId());
         companyList.add(company);
         return company;
     }

@@ -93,5 +93,16 @@ public class CompanyServiceTest {
         // then
         verify(companyRepository).delete(id);
     }
-
+    @Test
+    void should_return_company_when_createCompany_given_company(){
+        // given
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        Company company = new Company(1, "spring",employees);
+        given(companyRepository.save(company)).willReturn(company);
+        // when
+        Company actualCompany = companyService.addCompany(company);
+        // then
+        assertThat(actualCompany,equalTo(company));
+    }
 }
