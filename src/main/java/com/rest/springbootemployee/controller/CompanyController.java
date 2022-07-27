@@ -44,7 +44,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public Boolean updateCompanyById(@PathVariable int id,@RequestBody List<Employee> employees){
+    public Company updateCompanyById(@PathVariable int id,@RequestBody List<Employee> employees){
         return companyRepository.update(id,employees);
     }
 

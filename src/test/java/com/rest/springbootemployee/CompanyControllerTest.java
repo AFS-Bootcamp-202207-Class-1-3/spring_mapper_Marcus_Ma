@@ -123,16 +123,46 @@ public class CompanyControllerTest {
     }
     @Test
     void should_return_none_when_deleteCompanyById_given_Id() throws Exception {
-
         // given & when
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
         companyRepository.save(new Company(1, "spring",employees));
         client.perform(MockMvcRequestBuilders.delete("/companies/1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
-
         // should
         List<Company> companies = companyRepository.findAllCompanies();
         assertThat(companies, hasSize(0));
     }
+    @Test
+    void should_return_rightCompany_when_updateCompany_given_company_Id() throws Exception {
+        // given & when
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        companyRepository.save(new Company(1, "spring",employees));
+        String employee = "[\n" +
+                "    {\n" +
+                "        \"id\": 2,\n" +
+                "        \"name\": \"Lily\",\n" +
+                "        \"age\": 20,\n" +
+                "        \"gender\": \"Female\",\n" +
+                "        \"salary\": 11000\n" +
+                "    },\n" +
+                "    {\n" +
+                "        \"id\": 3,\n" +
+                "        \"name\": \"Lily\",\n" +
+                "        \"age\": 20,\n" +
+                "        \"gender\": \"Female\",\n" +
+                "        \"salary\": 11000\n" +
+                "    }\n" +
+                "]";
+//        then
+        client.perform(MockMvcRequestBuilders.put("/companies/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(employee))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(3)));
+    }
+
 }

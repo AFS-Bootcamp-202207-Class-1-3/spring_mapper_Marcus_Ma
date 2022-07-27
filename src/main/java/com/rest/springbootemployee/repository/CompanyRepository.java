@@ -60,9 +60,10 @@ public class CompanyRepository {
         return company;
     }
 
-    public Boolean update(int id,List<Employee> employees) {
-        findCompanyById(id).addEmployees(employees);
-        return true;
+    public Company update(int id,List<Employee> employees) {
+        Company company = findCompanyById(id);
+        company.addEmployees(employees);
+        return company;
     }
 
     public Boolean delete(int id) {
