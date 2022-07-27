@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -20,4 +21,16 @@ public class EmployeeService {
         System.out.println(employee);
         return employeeRepository.update(employee, newEmployee);
     }
+
+    public List<Employee> findEmployeesByGender(String gender) {
+        List<Employee> employeeList = employeeRepository.findAllEmployees();
+        return employeeList.stream()
+                .filter(employee -> employee.getGender().equals(gender))
+                .collect(Collectors.toList());
+    }
+
+    public List<Employee> findEmployeesByPage(int page, int pageSize) {
+        return employeeRepository.findEmployeesByPageAndPageSize(page,pageSize);
+    }
+
 }

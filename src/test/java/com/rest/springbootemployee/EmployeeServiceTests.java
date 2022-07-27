@@ -52,4 +52,22 @@ public class EmployeeServiceTests {
         verify(employeeRepository).update(oldEmployee, newEmployee);
 //        assertThat(updatedEmployee.getSalary(), equalTo(newEmployee.getSalary()));
     }
+    @Test
+    void should_return_employees_when_findEmployeesByGender_given_gender(){
+        // given
+        String gender = "Male";
+        Employee employee1 = new Employee(1, "Lily", 20, "Female", 11000);
+        Employee employee2 = new Employee(2, "Lily", 20, "Male", 10000);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(employee1);
+        employees.add(employee2);
+        given(employeeRepository.findAllEmployees()).willReturn(employees);
+        // when
+        List<Employee> actualEmployees = employeeService.findEmployeesByGender(gender);
+
+        // then
+        assertThat(actualEmployees,hasSize(1));
+        assertThat(actualEmployees.get(0),equalTo(employee2));
+    }
+
 }
