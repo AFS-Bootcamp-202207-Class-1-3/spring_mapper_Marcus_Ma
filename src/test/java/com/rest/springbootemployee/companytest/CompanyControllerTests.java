@@ -136,13 +136,11 @@ public class CompanyControllerTests {
     @Test
     void should_return_none_when_deleteCompanyById_given_Id() throws Exception {
         // given & when
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring", employees));
-        client.perform(MockMvcRequestBuilders.delete("/companies/1"))
+        Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
+        client.perform(MockMvcRequestBuilders.delete("/companies/{id}",company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
         // should
-        List<Company> companies = companyRepository.findAllCompanies();
+        List<Company> companies = jpaCompanyRepository.findAll();
         assertThat(companies, hasSize(0));
     }
 

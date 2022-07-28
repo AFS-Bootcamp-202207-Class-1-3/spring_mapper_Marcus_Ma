@@ -107,7 +107,7 @@ public class CompanyServiceTest {
         // when
         companyService.deleteCompanyById(id);
         // then
-        verify(companyRepository).delete(id);
+        verify(jpaCompanyRepository).deleteById(id);
     }
 
     @Test

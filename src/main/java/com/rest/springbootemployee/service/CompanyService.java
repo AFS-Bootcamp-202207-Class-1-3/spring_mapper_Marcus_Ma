@@ -40,7 +40,7 @@ public class CompanyService {
     }
 
     public void deleteCompanyById(int id) {
-        companyRepository.delete(id);
+        jpaCompanyRepository.deleteById(id);
     }
 
     public Company addCompany(Company company) {
