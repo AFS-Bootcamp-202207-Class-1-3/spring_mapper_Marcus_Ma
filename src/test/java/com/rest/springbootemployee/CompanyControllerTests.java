@@ -27,23 +27,26 @@ public class CompanyControllerTests {
     MockMvc client;
     @Autowired
     CompanyRepository companyRepository;
+
     @BeforeEach
     void clearDB() {
         companyRepository.clearAll();
     }
+
     @Test
     void should_return_allCompanies_when_getAllCompanies_given_none() throws Exception {
 //        given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring",employees));
+        companyRepository.save(new Company(1, "spring", employees));
         client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees",hasSize(1)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(1)));
     }
+
     @Test
     void should_return_company_when_create_company_given_company() throws Exception {
         // given
@@ -91,12 +94,12 @@ public class CompanyControllerTests {
 
         // when & then
         client.perform(MockMvcRequestBuilders.post("/companies")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(newCompany))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newCompany))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("test"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(5)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(5)));
 
         // should
         List<Company> allCompanies = companyRepository.findAllCompanies();
@@ -111,34 +114,36 @@ public class CompanyControllerTests {
 //        given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring",employees));
+        companyRepository.save(new Company(1, "spring", employees));
 //        when then
         client.perform(MockMvcRequestBuilders.get("/companies/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(1)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(1)));
         client.perform(MockMvcRequestBuilders.get("/companies/2"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
     @Test
     void should_return_none_when_deleteCompanyById_given_Id() throws Exception {
         // given & when
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring",employees));
+        companyRepository.save(new Company(1, "spring", employees));
         client.perform(MockMvcRequestBuilders.delete("/companies/1"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
         // should
         List<Company> companies = companyRepository.findAllCompanies();
         assertThat(companies, hasSize(0));
     }
+
     @Test
     void should_return_rightCompany_when_updateCompany_given_company_Id() throws Exception {
         // given & when
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring",employees));
+        companyRepository.save(new Company(1, "spring", employees));
         String employee = "[\n" +
                 "    {\n" +
                 "        \"id\": 2,\n" +
@@ -157,22 +162,23 @@ public class CompanyControllerTests {
                 "]";
 //        then
         client.perform(MockMvcRequestBuilders.put("/companies/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(employee))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(employee))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees",hasSize(3)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(3)));
     }
+
     @Test
     void should_return_Companies_when_getEmployeesByPage_given_page_pageSize() throws Exception {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring",employees));
-        companyRepository.save(new Company(2, "testA",employees));
-        companyRepository.save(new Company(3, "testB",employees));
-        companyRepository.save(new Company(4, "testC",employees));
-        companyRepository.save(new Company(5, "testD",employees));
+        companyRepository.save(new Company(1, "spring", employees));
+        companyRepository.save(new Company(2, "testA", employees));
+        companyRepository.save(new Company(3, "testB", employees));
+        companyRepository.save(new Company(4, "testC", employees));
+        companyRepository.save(new Company(5, "testD", employees));
         client.perform(MockMvcRequestBuilders.get("/companies?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
@@ -185,13 +191,14 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(5))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].companyName").value("testD"));
     }
+
     @Test
     void should_return_employees_when_getCompanyAllEmployeesByCompanyId_given_Id() throws Exception {
         // given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
         employees.add(new Employee(2, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring",employees));
+        companyRepository.save(new Company(1, "spring", employees));
 
         // when then
         client.perform(MockMvcRequestBuilders.get("/companies/1/employees"))

@@ -2,15 +2,17 @@ package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class EmployeeService {
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public List<Employee> findAll() {
         return employeeRepository.findAllEmployees();
@@ -22,22 +24,14 @@ public class EmployeeService {
     }
 
     public List<Employee> findEmployeesByGender(String gender) {
-//        List<Employee> employeeList = employeeRepository.findAllEmployees();
-//        return employeeList.stream()
-//                .filter(employee -> employee.getGender().equals(gender))
-//                .collect(Collectors.toList());
         return employeeRepository.findEmployeesByGender(gender);
     }
 
     public List<Employee> findEmployeesByPage(Integer page, Integer pageSize) {
-        return employeeRepository.findEmployeesByPageAndPageSize(page,pageSize);
+        return employeeRepository.findEmployeesByPageAndPageSize(page, pageSize);
     }
 
     public Employee findEmployeesById(Integer id) {
-//        List<Employee> employeeList = employeeRepository.findAllEmployees();
-//        return employeeList.stream()
-//                .filter(employee -> employee.getId().equals(id))
-//                .findFirst().orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
         return employeeRepository.findEmployeeById(id);
     }
 

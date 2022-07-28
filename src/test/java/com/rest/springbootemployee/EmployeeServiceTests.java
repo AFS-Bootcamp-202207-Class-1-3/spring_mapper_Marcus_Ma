@@ -24,8 +24,9 @@ public class EmployeeServiceTests {
     EmployeeRepository employeeRepository;
     @InjectMocks
     EmployeeService employeeService;
+
     @Test
-    void should_return_allEmployees_when_findAllEmployees_given_none(){
+    void should_return_allEmployees_when_findAllEmployees_given_none() {
         // given
         Employee employee = new Employee(1, "Lily", 20, "Female", 11000);
         List<Employee> employees = new ArrayList<>();
@@ -35,11 +36,12 @@ public class EmployeeServiceTests {
         List<Employee> actualEmployees = employeeService.findAll();
 
         // then
-        assertThat(actualEmployees,hasSize(1));
-        assertThat(actualEmployees.get(0),equalTo(employee));
+        assertThat(actualEmployees, hasSize(1));
+        assertThat(actualEmployees.get(0), equalTo(employee));
     }
+
     @Test
-    void should_return_updatedEmployee_when_update_given_employee(){
+    void should_return_updatedEmployee_when_update_given_employee() {
         // given
         Employee oldEmployee = new Employee(1, "Lily", 20, "Female", 11000);
         Employee newEmployee = new Employee(1, "Lily", 20, "Female", 12000);
@@ -52,13 +54,13 @@ public class EmployeeServiceTests {
         verify(employeeRepository).update(oldEmployee, newEmployee);
 //        assertThat(updatedEmployee.getSalary(), equalTo(newEmployee.getSalary()));
     }
+
     @Test
-    void should_return_employees_when_findEmployeesByGender_given_gender(){
+    void should_return_employees_when_findEmployeesByGender_given_gender() {
         // given
         String gender = "Male";
-        Employee employee1 = new Employee(1, "Lily", 20, "Female", 11000);
         Employee employee2 = new Employee(2, "Lily", 20, "Male", 10000);
-        List<Employee> maleEmployees =  new ArrayList<>();
+        List<Employee> maleEmployees = new ArrayList<>();
         maleEmployees.add(employee2);
 //        given(employeeRepository.findAllEmployees()).willReturn(employees);
         given(employeeRepository.findEmployeesByGender(gender)).willReturn(maleEmployees);
@@ -66,11 +68,12 @@ public class EmployeeServiceTests {
         List<Employee> actualEmployees = employeeService.findEmployeesByGender(gender);
 
         // then
-        assertThat(actualEmployees,hasSize(1));
-        assertThat(actualEmployees.get(0),equalTo(employee2));
+        assertThat(actualEmployees, hasSize(1));
+        assertThat(actualEmployees.get(0), equalTo(employee2));
     }
+
     @Test
-    void should_return_employees_when_findEmployeesByPage_given_page_pageSize(){
+    void should_return_employees_when_findEmployeesByPage_given_page_pageSize() {
         // given
         Employee employee1 = new Employee(1, "Lily", 20, "Female", 11000);
         Employee employee2 = new Employee(2, "Lily", 20, "Male", 10000);
@@ -83,15 +86,16 @@ public class EmployeeServiceTests {
         employees.add(employee3);
         employees.add(employee4);
         employees.add(employee5);
-        given(employeeRepository.findEmployeesByPageAndPageSize(1,5)).willReturn(employees);
+        given(employeeRepository.findEmployeesByPageAndPageSize(1, 5)).willReturn(employees);
         // when
-        List<Employee> actualEmployees = employeeService.findEmployeesByPage(1,5);
+        List<Employee> actualEmployees = employeeService.findEmployeesByPage(1, 5);
         // then
-        assertThat(actualEmployees,hasSize(5));
-        assertThat(actualEmployees.get(4),equalTo(employee5));
+        assertThat(actualEmployees, hasSize(5));
+        assertThat(actualEmployees.get(4), equalTo(employee5));
     }
+
     @Test
-    void should_return_employee_when_findEmployeesById_given_Id(){
+    void should_return_employee_when_findEmployeesById_given_Id() {
         // given
         int id = 2;
         Employee employee2 = new Employee(2, "Lily", 20, "Male", 10000);
@@ -99,22 +103,22 @@ public class EmployeeServiceTests {
         // when
         Employee actualEmployee = employeeService.findEmployeesById(id);
         // then
-        assertThat(actualEmployee,equalTo(employee2));
+        assertThat(actualEmployee, equalTo(employee2));
     }
 
     @Test
-    void should_return_employee_when_create_employee_given_new_employee(){
+    void should_return_employee_when_create_employee_given_new_employee() {
         // given
         Employee employee = new Employee(1, "Lily", 20, "Male", 10000);
         given(employeeRepository.save(employee)).willReturn(employee);
         // when
         Employee actualEmployee = employeeService.addEmployee(employee);
         // then
-        assertThat(actualEmployee,equalTo(employee));
+        assertThat(actualEmployee, equalTo(employee));
     }
 
     @Test
-    void should_return_noContent_when_delete_employee_given_id(){
+    void should_return_noContent_when_delete_employee_given_id() {
         // given
         int id = 1;
         // when
@@ -122,7 +126,6 @@ public class EmployeeServiceTests {
         // then
         verify(employeeRepository).delete(id);
     }
-
 
 
 }

@@ -32,9 +32,8 @@ public class Company {
         return employees;
     }
 
-    public Boolean addEmployees(List<Employee> employees) {
+    public void addEmployees(List<Employee> employees) {
         employees.forEach(employee -> this.getEmployees().add(employee));
-        return true;
     }
 
 }

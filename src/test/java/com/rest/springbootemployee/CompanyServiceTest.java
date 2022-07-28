@@ -26,12 +26,13 @@ public class CompanyServiceTest {
     CompanyRepository companyRepository = new CompanyRepository(new EmployeeRepository());
     @InjectMocks
     CompanyService companyService;
+
     @Test
-    void should_return_allCompanies_when_findAllCompanies_given_none(){
+    void should_return_allCompanies_when_findAllCompanies_given_none() {
         // given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        Company company = new Company(1, "spring",employees);
+        Company company = new Company(1, "spring", employees);
         List<Company> companies = new ArrayList<>();
         companies.add(company);
         given(companyRepository.findAllCompanies()).willReturn(companies);
@@ -39,52 +40,55 @@ public class CompanyServiceTest {
         List<Company> actualCompanies = companyService.findAll();
 
         // then
-        assertThat(actualCompanies,hasSize(1));
-        assertThat(actualCompanies.get(0),equalTo(company));
+        assertThat(actualCompanies, hasSize(1));
+        assertThat(actualCompanies.get(0), equalTo(company));
     }
+
     @Test
-    void should_return_company_when_findCompanyById_given_id(){
+    void should_return_company_when_findCompanyById_given_id() {
         // given
         int id = 1;
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        Company company = new Company(1, "spring",employees);
+        Company company = new Company(1, "spring", employees);
         given(companyRepository.findCompanyById(id)).willReturn(company);
         // when
         Company actualCompany = companyService.findCompanyById(id);
         // then
-        assertThat(actualCompany,equalTo(company));
+        assertThat(actualCompany, equalTo(company));
     }
+
     @Test
-    void should_return_employees_when_findCompanyEmployeesById_given_id(){
+    void should_return_employees_when_findCompanyEmployeesById_given_id() {
         // given
         int id = 1;
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        Company company = new Company(1, "spring",employees);
         given(companyRepository.findCompanyAllEmployeesByCompanyId(id)).willReturn(employees);
         // when
         List<Employee> actualEmployees = companyService.findCompanyAllEmployeesByCompanyId(id);
         // then
-        assertThat(actualEmployees,equalTo(employees));
+        assertThat(actualEmployees, equalTo(employees));
     }
+
     @Test
-    void should_return_companies_when_findCompaniesByPage_given_page(){
+    void should_return_companies_when_findCompaniesByPage_given_page() {
         // given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        Company company = new Company(1, "spring",employees);
+        Company company = new Company(1, "spring", employees);
         List<Company> companies = new ArrayList<>();
         companies.add(company);
-        given(companyRepository.findCompaniesByPageAndPageSize(1,5)).willReturn(companies);
+        given(companyRepository.findCompaniesByPageAndPageSize(1, 5)).willReturn(companies);
         // when
-        List<Company> actualCompanies = companyService.findCompaniesByPageAndPageSize(1,5);
+        List<Company> actualCompanies = companyService.findCompaniesByPageAndPageSize(1, 5);
         // then
-        assertThat(actualCompanies,hasSize(1));
-        assertThat(actualCompanies.get(0),equalTo(company));
+        assertThat(actualCompanies, hasSize(1));
+        assertThat(actualCompanies.get(0), equalTo(company));
     }
+
     @Test
-    void should_return_noContent_when_deleteCompanyById_given_id(){
+    void should_return_noContent_when_deleteCompanyById_given_id() {
         // given
         int id = 1;
         // when
@@ -92,24 +96,26 @@ public class CompanyServiceTest {
         // then
         verify(companyRepository).delete(id);
     }
+
     @Test
-    void should_return_company_when_createCompany_given_company(){
+    void should_return_company_when_createCompany_given_company() {
         // given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        Company company = new Company(1, "spring",employees);
+        Company company = new Company(1, "spring", employees);
         given(companyRepository.save(company)).willReturn(company);
         // when
         Company actualCompany = companyService.addCompany(company);
         // then
-        assertThat(actualCompany,equalTo(company));
+        assertThat(actualCompany, equalTo(company));
     }
+
     @Test
-    void should_return_updatedCompany_when_update_given_company(){
+    void should_return_updatedCompany_when_update_given_company() {
         // given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        Company oldCompany = new Company(1, "spring",employees);
+        Company oldCompany = new Company(1, "spring", employees);
         List<Employee> newEmployee = new ArrayList<>();
         employees.add(new Employee(2, "test", 20, "Male", 11000));
         given(companyRepository.findCompanyById(1)).willReturn(oldCompany);

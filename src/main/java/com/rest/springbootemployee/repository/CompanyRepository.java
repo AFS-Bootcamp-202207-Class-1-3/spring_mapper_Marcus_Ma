@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class CompanyRepository {
-    private List<Company> companyList;
+    private final List<Company> companyList;
 
     public CompanyRepository(EmployeeRepository employeeRepository) {
         companyList = new ArrayList<Company>() {
@@ -33,7 +33,7 @@ public class CompanyRepository {
         return companyList.stream()
                 .filter(company -> company.getId().equals(id))
                 .findFirst()
-                .orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
+                .orElseThrow(() -> new NotFoundException(Company.class.getSimpleName()));
     }
 
     public List<Employee> findCompanyAllEmployeesByCompanyId(Integer id) {
@@ -42,12 +42,12 @@ public class CompanyRepository {
 
     public List<Company> findCompaniesByPageAndPageSize(Integer page, Integer pageSize) {
         return companyList.stream()
-                .skip((page - 1) * pageSize)
+                .skip((long) (page - 1) * pageSize)
                 .limit(pageSize)
                 .collect(Collectors.toList());
     }
 
-    public Integer generateId(){
+    public Integer generateId() {
         return companyList.stream()
                 .mapToInt(Company::getId)
                 .max()
@@ -59,13 +59,13 @@ public class CompanyRepository {
         return company;
     }
 
-    public Company update(Company company,List<Employee> employees) {
+    public Company update(Company company, List<Employee> employees) {
         company.addEmployees(employees);
         return company;
     }
 
-    public Boolean delete(Integer id) {
-        return companyList.remove(findCompanyById(id));
+    public void delete(Integer id) {
+        companyList.remove(findCompanyById(id));
     }
 
     public void clearAll() {

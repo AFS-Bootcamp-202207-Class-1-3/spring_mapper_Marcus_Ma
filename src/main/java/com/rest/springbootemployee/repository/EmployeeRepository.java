@@ -32,7 +32,7 @@ public class EmployeeRepository {
     public Employee findEmployeeById(Integer id) {
         return employeeList.stream()
                 .filter(employee -> employee.getId() == id)
-                .findFirst().orElseThrow(()-> new NotFoundException(Company.class.getSimpleName()));
+                .findFirst().orElseThrow(() -> new NotFoundException(Company.class.getSimpleName()));
     }
 
     public List<Employee> findEmployeesByGender(String gender) {
