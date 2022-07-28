@@ -2,6 +2,7 @@ package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,13 +10,14 @@ import java.util.List;
 @Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
-
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    JpaEmployeeRepository jpaEmployeeRepository;
+    public EmployeeService(EmployeeRepository employeeRepository,JpaEmployeeRepository jpaEmployeeRepository) {
         this.employeeRepository = employeeRepository;
+        this.jpaEmployeeRepository = jpaEmployeeRepository;
     }
 
     public List<Employee> findAll() {
-        return employeeRepository.findAllEmployees();
+        return jpaEmployeeRepository.findAll();
     }
 
     public Employee update(Integer id, Employee newEmployee) {

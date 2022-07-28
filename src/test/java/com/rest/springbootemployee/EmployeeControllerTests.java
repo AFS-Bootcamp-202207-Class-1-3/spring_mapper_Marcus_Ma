@@ -2,6 +2,7 @@ package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,8 @@ class EmployeeControllerTests {
     MockMvc client;
     @Autowired
     EmployeeRepository employeeRepository;
-
+    @Autowired
+    JpaEmployeeRepository jpaEmployeeRepository;
     @BeforeEach
     void clearDB() {
         employeeRepository.clearAll();
@@ -33,7 +35,8 @@ class EmployeeControllerTests {
 
     @Test
     void should_return_allEmployees_when_getAllEmployees_given_none() throws Exception {
-        employeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
+//        employeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
         client.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))

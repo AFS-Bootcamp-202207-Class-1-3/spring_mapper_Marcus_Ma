@@ -2,6 +2,7 @@ package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import com.rest.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,8 @@ import static org.mockito.Mockito.verify;
 public class EmployeeServiceTests {
     @Spy
     EmployeeRepository employeeRepository;
+    @Spy
+    JpaEmployeeRepository jpaEmployeeRepository;
     @InjectMocks
     EmployeeService employeeService;
 
@@ -31,7 +34,7 @@ public class EmployeeServiceTests {
         Employee employee = new Employee(1, "Lily", 20, "Female", 11000);
         List<Employee> employees = new ArrayList<>();
         employees.add(employee);
-        given(employeeRepository.findAllEmployees()).willReturn(employees);
+        given(jpaEmployeeRepository.findAll()).willReturn(employees);
         // when
         List<Employee> actualEmployees = employeeService.findAll();
 
