@@ -179,14 +179,12 @@ public class CompanyControllerTests {
     }
 
     @Test
-    void should_return_Companies_when_getEmployeesByPage_given_page_pageSize() throws Exception {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring", employees));
-        companyRepository.save(new Company(2, "testA", employees));
-        companyRepository.save(new Company(3, "testB", employees));
-        companyRepository.save(new Company(4, "testC", employees));
-        companyRepository.save(new Company(5, "testD", employees));
+    void should_return_Companies_when_getCompaniesByPage_given_page_pageSize() throws Exception {
+        jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
+        jpaCompanyRepository.save(new Company(2, "testA", Collections.emptyList()));
+        jpaCompanyRepository.save(new Company(3, "testB", Collections.emptyList()));
+        jpaCompanyRepository.save(new Company(4, "testC", Collections.emptyList()));
+        jpaCompanyRepository.save(new Company(5, "testD", Collections.emptyList()));
         client.perform(MockMvcRequestBuilders.get("/companies?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))

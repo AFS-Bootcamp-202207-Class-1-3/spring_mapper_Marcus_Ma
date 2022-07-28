@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Spy;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -90,7 +92,7 @@ public class CompanyServiceTest {
         Company company = new Company(1, "spring", employees);
         List<Company> companies = new ArrayList<>();
         companies.add(company);
-        given(companyRepository.findCompaniesByPageAndPageSize(1, 5)).willReturn(companies);
+        given(jpaCompanyRepository.findAll(PageRequest.of(0,5))).willReturn(new PageImpl<>(companies));
         // when
         List<Company> actualCompanies = companyService.findCompaniesByPageAndPageSize(1, 5);
         // then

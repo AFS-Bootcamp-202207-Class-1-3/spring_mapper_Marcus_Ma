@@ -5,6 +5,7 @@ import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NotFoundException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class CompanyService {
     }
 
     public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
-        return companyRepository.findCompaniesByPageAndPageSize(page, pageSize);
+        return jpaCompanyRepository.findAll(PageRequest.of(page-1,pageSize)).toList();
     }
 
     public void deleteCompanyById(int id) {
