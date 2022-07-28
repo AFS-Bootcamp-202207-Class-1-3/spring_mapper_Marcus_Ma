@@ -1,6 +1,7 @@
 package com.rest.springbootemployee.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,7 +12,7 @@ public class Company {
     private String companyName;
     @OneToMany
     @JoinColumn(name = "companyId")
-    private List<Employee> employees;
+    private List<Employee> employees = new ArrayList<>();
 
     public Company() {
     }
@@ -28,6 +29,10 @@ public class Company {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     public String getCompanyName() {

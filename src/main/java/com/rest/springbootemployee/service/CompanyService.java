@@ -29,7 +29,9 @@ public class CompanyService {
     }
 
     public List<Employee> findCompanyAllEmployeesByCompanyId(int id) {
-        return companyRepository.findCompanyAllEmployeesByCompanyId(id);
+        Company company = jpaCompanyRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(Company.class.getSimpleName()));
+        return company.getEmployees();
     }
 
     public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {

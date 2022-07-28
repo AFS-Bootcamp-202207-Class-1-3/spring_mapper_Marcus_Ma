@@ -4,6 +4,7 @@ import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
+import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,20 @@ public class CompanyControllerTests {
     CompanyRepository companyRepository;
     @Autowired
     JpaCompanyRepository jpaCompanyRepository;
-
+    @Autowired
+    JpaEmployeeRepository jpaEmployeeRepository;
+    int companyId;
     @BeforeEach
     void clearDB() {
         companyRepository.clearAll();
         jpaCompanyRepository.deleteAll();
+        jpaEmployeeRepository.deleteAll();
     }
 
     @Test
     void should_return_allCompanies_when_getAllCompanies_given_none() throws Exception {
 //        given
-//        List<Employee> employees = new ArrayList<>();
-//        employees.add(new Employee(1, "Lily", 20, "Female", 11000,1));
+
         jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
         client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -119,8 +122,6 @@ public class CompanyControllerTests {
     @Test
     void should_return_rightCompany_when_getCompanyById_given_Id() throws Exception {
 //        given
-//        List<Employee> employees = new ArrayList<>();
-//        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
         Company company =  jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
 //        when then
         client.perform(MockMvcRequestBuilders.get("/companies/{id}",company.getId()))
@@ -202,13 +203,16 @@ public class CompanyControllerTests {
     @Test
     void should_return_employees_when_getCompanyAllEmployeesByCompanyId_given_Id() throws Exception {
         // given
+        Company company = jpaCompanyRepository.save(new Company(companyId, "spring", Collections.emptyList()));
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        employees.add(new Employee(2, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring", employees));
-
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
+        employees.add(new Employee(2, "Lily", 20, "Female", 11000,company.getId()));
+        company.addEmployees(employees);
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
+        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Female", 11000,company.getId()));
+        jpaCompanyRepository.save(company);
         // when then
-        client.perform(MockMvcRequestBuilders.get("/companies/1/employees"))
+        client.perform(MockMvcRequestBuilders.get("/companies/{id}/employees",company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
