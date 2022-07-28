@@ -61,46 +61,10 @@ public class CompanyControllerTests {
     void should_return_company_when_create_company_given_company() throws Exception {
         // given
         String newCompany = "{\n" +
-                "        \"id\": 9,\n" +
-                "        \"companyName\": \"test\",\n" +
-                "        \"employees\": [\n" +
-                "            {\n" +
-                "                \"id\": 1,\n" +
-                "                \"name\": \"Lily\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"Female\",\n" +
-                "                \"salary\": 11000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 2,\n" +
-                "                \"name\": \"Lily\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"Female\",\n" +
-                "                \"salary\": 11000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 3,\n" +
-                "                \"name\": \"Lily\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"Female\",\n" +
-                "                \"salary\": 11000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 4,\n" +
-                "                \"name\": \"Lily\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"Female\",\n" +
-                "                \"salary\": 11000\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"id\": 5,\n" +
-                "                \"name\": \"Leo\",\n" +
-                "                \"age\": 20,\n" +
-                "                \"gender\": \"Male\",\n" +
-                "                \"salary\": 11000\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    }";
+                "    \"id\": 1,\n" +
+                "    \"companyName\": \"test\",\n" +
+                "    \"employees\": []\n" +
+                "}";
 
         // when & then
         client.perform(MockMvcRequestBuilders.post("/companies")
@@ -109,14 +73,12 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("test"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(5)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(0)));
 
         // should
-        List<Company> allCompanies = companyRepository.findAllCompanies();
+        List<Company> allCompanies = jpaCompanyRepository.findAll();
         assertThat(allCompanies, hasSize(1));
-        assertThat(allCompanies.get(0).getId(), equalTo(1));
         assertThat(allCompanies.get(0).getCompanyName(), equalTo("test"));
-        assertThat(allCompanies.get(0).getEmployees(), hasSize(5));
     }
 
     @Test
@@ -186,13 +148,11 @@ public class CompanyControllerTests {
         client.perform(MockMvcRequestBuilders.get("/companies?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"));
 
         client.perform(MockMvcRequestBuilders.get("/companies?page=2&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(5))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].companyName").value("testD"));
     }
 

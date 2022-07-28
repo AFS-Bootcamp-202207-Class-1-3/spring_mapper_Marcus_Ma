@@ -44,8 +44,7 @@ public class CompanyService {
     }
 
     public Company addCompany(Company company) {
-        company.setId(companyRepository.generateId());
-        return companyRepository.save(company);
+        return jpaCompanyRepository.save(company);
     }
 
     public Company update(int id, List<Employee> newEmployee) {
