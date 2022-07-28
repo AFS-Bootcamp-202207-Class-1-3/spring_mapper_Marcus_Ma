@@ -2,6 +2,7 @@ package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
+import com.rest.springbootemployee.exception.NotFoundException;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,8 @@ public class CompanyService {
         return jpaCompanyRepository.findAll();
     }
     public Company findCompanyById(int id) {
-        return companyRepository.findCompanyById(id);
+        return jpaCompanyRepository.findById(id)
+                .orElseThrow(()->new NotFoundException(Company.class.getSimpleName()));
     }
 
     public List<Employee> findCompanyAllEmployeesByCompanyId(int id) {
