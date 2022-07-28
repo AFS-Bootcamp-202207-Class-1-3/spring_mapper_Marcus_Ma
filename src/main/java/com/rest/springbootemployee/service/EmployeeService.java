@@ -2,7 +2,6 @@ package com.rest.springbootemployee.service;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NotFoundException;
-import com.rest.springbootemployee.repository.EmployeeRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class EmployeeService {
         return jpaEmployeeRepository.findByGender(gender);
     }
     public List<Employee> findEmployeesByPage(Integer page, Integer pageSize) {
-        return jpaEmployeeRepository.findAll(PageRequest.of(page - 1,pageSize)).toList();
+        return jpaEmployeeRepository.findAll(PageRequest.of((page - 1),pageSize)).toList();
     }
 
     public Employee findEmployeesById(Integer id) {

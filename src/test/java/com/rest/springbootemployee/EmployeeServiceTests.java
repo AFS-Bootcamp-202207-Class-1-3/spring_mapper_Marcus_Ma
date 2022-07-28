@@ -1,7 +1,6 @@
 package com.rest.springbootemployee;
 
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.repository.EmployeeRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import com.rest.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ public class EmployeeServiceTests {
     JpaEmployeeRepository jpaEmployeeRepository;
     @InjectMocks
     EmployeeService employeeService;
-
 
     @Test
     void should_return_allEmployees_when_findAllEmployees_given_none() {

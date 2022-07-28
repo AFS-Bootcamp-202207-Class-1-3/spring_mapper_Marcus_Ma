@@ -1,7 +1,8 @@
 package com.rest.springbootemployee;
 
+import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.repository.EmployeeRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,22 +24,28 @@ import static org.hamcrest.Matchers.hasSize;
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@ActiveProfiles("test")
 class EmployeeControllerTests {
     @Autowired
     MockMvc client;
     @Autowired
-    EmployeeRepository employeeRepository;
-    @Autowired
     JpaEmployeeRepository jpaEmployeeRepository;
+
+    @Autowired
+    JpaCompanyRepository jpaCompanyRepository;
+
+    int companyId;
     @BeforeEach
     void clearDB() {
-        employeeRepository.clearAll();
         jpaEmployeeRepository.deleteAll();
+        jpaCompanyRepository.deleteAll();
+        Company company = jpaCompanyRepository.save(new Company(1,"test", Collections.emptyList()));
+        this.companyId = company.getId();
     }
 
     @Test
     void should_return_allEmployees_when_getAllEmployees_given_none() throws Exception {
-        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
         client.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
@@ -81,7 +89,8 @@ class EmployeeControllerTests {
 
     @Test
     void should_return_rightEmployee_when_getEmployeeById_given_Id() throws Exception {
-        Employee employee =  jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
+        Employee employee =  jpaEmployeeRepository
+                .save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
         client.perform(MockMvcRequestBuilders.get("/employees/{id}",employee.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
@@ -96,7 +105,7 @@ class EmployeeControllerTests {
     void should_return_none_when_deleteEmployeeById_given_a_Id() throws Exception {
 
         // given & when
-        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
+        Employee employee = jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
         client.perform(MockMvcRequestBuilders.delete("/employees/{id}",employee.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
@@ -109,7 +118,7 @@ class EmployeeControllerTests {
     void should_return_rightEmployee_when_updateEmployee_given_employee() throws Exception {
         // given & when
         Employee originEmployee = jpaEmployeeRepository
-                                .save(new Employee(1, "Lily", 20, "Female", 11000));
+                                .save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
         String employee = "{\n" +
                 "    \"id\": 12,\n" +
                 "    \"name\": \"zs\",\n" +
@@ -130,8 +139,8 @@ class EmployeeControllerTests {
 
     @Test
     void should_return_Employees_when_getEmployeesByGender_given_gender() throws Exception {
-        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
-        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Male", 9999));
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
+        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Male", 9999,companyId));
         client.perform(MockMvcRequestBuilders.get("/employees?gender=Male"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
@@ -144,15 +153,16 @@ class EmployeeControllerTests {
 
     @Test
     void should_return_Employees_when_getEmployeesByPage_given_page_pageSize() throws Exception {
-        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000));
-        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Male", 9999));
-        jpaEmployeeRepository.save(new Employee(3, "Lily", 20, "Male", 8888));
-        jpaEmployeeRepository.save(new Employee(4, "Lily", 20, "Male", 7777));
-        jpaEmployeeRepository.save(new Employee(5, "Lily", 20, "Male", 6666));
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
+        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Male", 9999,companyId));
+        jpaEmployeeRepository.save(new Employee(3, "Lily", 20, "Male", 8888,companyId));
+        jpaEmployeeRepository.save(new Employee(4, "Lily", 20, "Male", 7777,companyId));
+        jpaEmployeeRepository.save(new Employee(5, "Lily", 20, "Male", 6666,companyId));
+        List<Employee> employees = jpaEmployeeRepository.findAll();
         client.perform(MockMvcRequestBuilders.get("/employees?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Lily"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(20))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("Female"))
