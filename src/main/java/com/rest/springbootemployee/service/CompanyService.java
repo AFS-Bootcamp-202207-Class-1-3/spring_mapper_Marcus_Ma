@@ -3,6 +3,7 @@ package com.rest.springbootemployee.service;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +12,16 @@ import java.util.List;
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
-    }
+    private final JpaCompanyRepository jpaCompanyRepository;
 
+    public CompanyService(CompanyRepository companyRepository,JpaCompanyRepository jpaCompanyRepository) {
+        this.companyRepository = companyRepository;
+        this.jpaCompanyRepository = jpaCompanyRepository;
+    }
 
     public List<Company> findAll() {
-        return companyRepository.findAllCompanies();
+        return jpaCompanyRepository.findAll();
     }
-
     public Company findCompanyById(int id) {
         return companyRepository.findCompanyById(id);
     }

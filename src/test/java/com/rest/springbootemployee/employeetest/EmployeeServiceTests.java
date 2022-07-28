@@ -1,4 +1,4 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.employeetest;
 
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;

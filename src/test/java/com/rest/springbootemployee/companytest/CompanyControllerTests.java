@@ -1,8 +1,9 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.companytest;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
+import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,24 +31,27 @@ public class CompanyControllerTests {
     MockMvc client;
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    JpaCompanyRepository jpaCompanyRepository;
 
     @BeforeEach
     void clearDB() {
         companyRepository.clearAll();
+        jpaCompanyRepository.deleteAll();
     }
 
     @Test
     void should_return_allCompanies_when_getAllCompanies_given_none() throws Exception {
 //        given
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring", employees));
+//        List<Employee> employees = new ArrayList<>();
+//        employees.add(new Employee(1, "Lily", 20, "Female", 11000,1));
+        jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
         client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(1)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(0)));
     }
 
     @Test

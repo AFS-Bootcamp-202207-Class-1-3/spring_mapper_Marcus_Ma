@@ -1,4 +1,4 @@
-package com.rest.springbootemployee;
+package com.rest.springbootemployee.employeetest;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.hasSize;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 class EmployeeControllerTests {
     @Autowired
     MockMvc client;
@@ -153,7 +153,7 @@ class EmployeeControllerTests {
 
     @Test
     void should_return_Employees_when_getEmployeesByPage_given_page_pageSize() throws Exception {
-        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
+        Employee employee1 = jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
         jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Male", 9999,companyId));
         jpaEmployeeRepository.save(new Employee(3, "Lily", 20, "Male", 8888,companyId));
         jpaEmployeeRepository.save(new Employee(4, "Lily", 20, "Male", 7777,companyId));
@@ -162,7 +162,7 @@ class EmployeeControllerTests {
         client.perform(MockMvcRequestBuilders.get("/employees?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee1.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Lily"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(20))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("Female"))
