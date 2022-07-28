@@ -13,32 +13,30 @@ import java.util.List;
 @RestController
 @RequestMapping("companies")
 public class CompanyController {
-    @Autowired
-    private CompanyService companyService;
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
-    public CompanyController(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyController(CompanyService companyService) {
+        this.companyService = companyService;
     }
 
     @GetMapping
     public List<Company> getAllCompanies(){
-        return companyRepository.findAllCompanies();
+        return companyService.findAll();
     }
 
     @GetMapping("/{id}")
     public Company getCompanyById(@PathVariable Integer id){
-        return companyRepository.findCompanyById(id);
+        return companyService.findCompanyById(id);
     }
 
     @GetMapping("/{id}/employees")
     public List<Employee> getCompanyAllEmployeesByCompanyId(@PathVariable Integer id){
-        return companyRepository.findCompanyAllEmployeesByCompanyId(id);
+        return companyService.findCompanyAllEmployeesByCompanyId(id);
     }
 
     @GetMapping(params = {"page","pageSize"})
     public List<Company> getCompaniesByPageAndPageSize(@RequestParam Integer page,@RequestParam Integer pageSize){
-        return companyRepository.findCompaniesByPageAndPageSize(page,pageSize);
+        return companyService.findCompaniesByPageAndPageSize(page,pageSize);
     }
 
     @PostMapping
@@ -54,7 +52,7 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Boolean deleteCompanyById(@PathVariable Integer id){
-        return companyRepository.delete(id);
+    public void deleteCompanyById(@PathVariable Integer id){
+        companyService.deleteCompanyById(id);
     }
 }

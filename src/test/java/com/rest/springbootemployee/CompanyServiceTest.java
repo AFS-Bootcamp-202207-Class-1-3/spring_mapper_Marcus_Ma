@@ -79,7 +79,6 @@ public class CompanyServiceTest {
         given(companyRepository.findCompaniesByPageAndPageSize(1,5)).willReturn(companies);
         // when
         List<Company> actualCompanies = companyService.findCompaniesByPageAndPageSize(1,5);
-
         // then
         assertThat(actualCompanies,hasSize(1));
         assertThat(actualCompanies.get(0),equalTo(company));

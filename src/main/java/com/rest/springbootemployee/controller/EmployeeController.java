@@ -12,33 +12,31 @@ import java.util.List;
 @RestController
 @RequestMapping("employees")
 public class EmployeeController {
-    private final EmployeeRepository employeeRepository;
-    @Autowired
-    private EmployeeService employeeService;
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
+    private final EmployeeService employeeService;
 
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAllEmployees();
+        return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Integer id) {
-        return employeeRepository.findEmployeeById(id);
+        return employeeService.findEmployeesById(id);
     }
 
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeesByGender(@RequestParam String gender) {
-        return employeeRepository.findEmployeesByGender(gender);
+        return employeeService.findEmployeesByGender(gender);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee saveEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+        return employeeService.addEmployee(employee);
     }
 
     @PutMapping("/{id}")
@@ -49,11 +47,11 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployeeById(@PathVariable Integer id) {
-        employeeRepository.delete(id);
+        employeeService.deleteEmployeeById(id);
     }
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getEmployeesByPageAndPageSize(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return employeeRepository.findEmployeesByPageAndPageSize(page, pageSize);
+        return employeeService.findEmployeesByPage(page, pageSize);
     }
 }
