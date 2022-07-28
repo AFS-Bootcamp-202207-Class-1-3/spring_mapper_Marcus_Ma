@@ -36,7 +36,6 @@ public class CompanyControllerTests {
     JpaCompanyRepository jpaCompanyRepository;
     @Autowired
     JpaEmployeeRepository jpaEmployeeRepository;
-    int companyId;
     @BeforeEach
     void clearDB() {
         companyRepository.clearAll();
@@ -48,11 +47,11 @@ public class CompanyControllerTests {
     void should_return_allCompanies_when_getAllCompanies_given_none() throws Exception {
 //        given
 
-        jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
+        Company company =  jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
         client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(company.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(0)));
     }
@@ -109,33 +108,26 @@ public class CompanyControllerTests {
     @Test
     void should_return_rightCompany_when_updateCompany_given_company_Id() throws Exception {
         // given & when
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
-        companyRepository.save(new Company(1, "spring", employees));
+        Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
         String employee = "[\n" +
                 "    {\n" +
-                "        \"id\": 2,\n" +
+                "        \"id\": 1,\n" +
                 "        \"name\": \"Lily\",\n" +
                 "        \"age\": 20,\n" +
                 "        \"gender\": \"Female\",\n" +
-                "        \"salary\": 11000\n" +
-                "    },\n" +
-                "    {\n" +
-                "        \"id\": 3,\n" +
-                "        \"name\": \"Lily\",\n" +
-                "        \"age\": 20,\n" +
-                "        \"gender\": \"Female\",\n" +
-                "        \"salary\": 11000\n" +
+                "        \"salary\": 11000,\n" +
+                "        \"companyId\":"+company.getId()+"\n" +
                 "    }\n" +
                 "]";
 //        then
-        client.perform(MockMvcRequestBuilders.put("/companies/1")
+        client.perform(MockMvcRequestBuilders.put("/companies/{id}",company.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(employee))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(3)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(2)));
     }
 
     @Test
@@ -159,7 +151,7 @@ public class CompanyControllerTests {
     @Test
     void should_return_employees_when_getCompanyAllEmployeesByCompanyId_given_Id() throws Exception {
         // given
-        Company company = jpaCompanyRepository.save(new Company(companyId, "spring", Collections.emptyList()));
+        Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
         employees.add(new Employee(2, "Lily", 20, "Female", 11000,company.getId()));
@@ -173,6 +165,5 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Lily"));
-
     }
 }

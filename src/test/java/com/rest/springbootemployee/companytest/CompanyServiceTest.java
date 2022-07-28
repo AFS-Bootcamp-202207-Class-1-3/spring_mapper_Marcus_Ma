@@ -125,17 +125,16 @@ public class CompanyServiceTest {
     void should_return_updatedCompany_when_update_given_company() {
         // given
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000));
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000,1));
         Company oldCompany = new Company(1, "spring", employees);
         List<Employee> newEmployee = new ArrayList<>();
-        employees.add(new Employee(2, "test", 20, "Male", 11000));
-        given(companyRepository.findCompanyById(1)).willReturn(oldCompany);
+        employees.add(new Employee(2, "Lily", 20, "Female", 11000,1));
+        given(jpaCompanyRepository.findById(1)).willReturn(Optional.of(oldCompany));
 //        service
-        given(companyRepository.update(oldCompany, newEmployee)).willCallRealMethod();
+        given(jpaCompanyRepository.save(oldCompany)).willReturn(oldCompany);
         // when
-        companyService.update(1, newEmployee);
+        Company company = companyService.update(1, newEmployee);
         // then
-        verify(companyRepository).update(oldCompany, newEmployee);
-//        assertThat(updatedEmployee.getSalary(), equalTo(newEmployee.getSalary()));
+        assertThat(company.getEmployees().size(),equalTo(2));
     }
 }

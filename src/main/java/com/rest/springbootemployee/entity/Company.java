@@ -10,7 +10,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String companyName;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "companyId")
     private List<Employee> employees = new ArrayList<>();
 
@@ -41,6 +41,10 @@ public class Company {
 
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public void addEmployees(List<Employee> employees) {

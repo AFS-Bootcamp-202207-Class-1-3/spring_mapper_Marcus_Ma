@@ -48,7 +48,8 @@ public class CompanyService {
     }
 
     public Company update(int id, List<Employee> newEmployee) {
-        Company company = companyRepository.findCompanyById(id);
-        return companyRepository.update(company, newEmployee);
+        Company company = findCompanyById(id);
+        company.addEmployees(newEmployee);
+        return jpaCompanyRepository.save(company);
     }
 }
