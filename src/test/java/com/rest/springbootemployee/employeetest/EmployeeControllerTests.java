@@ -1,5 +1,7 @@
 package com.rest.springbootemployee.employeetest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rest.springbootemployee.controller.EmployeeRequest;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
@@ -66,11 +68,17 @@ class EmployeeControllerTests {
                 "    \"gender\": \"Male\",\n" +
                 "    \"salary\": 10000\n" +
                 "}";
-
+        EmployeeRequest employeeRequest = new EmployeeRequest();
+        employeeRequest.setName("zs");
+        employeeRequest.setAge(20);
+        employeeRequest.setGender("Male");
+        employeeRequest.setSalary(10000);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requstJson = objectMapper.writeValueAsString(employeeRequest);
         // when & then
         client.perform(MockMvcRequestBuilders.post("/employees")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(newEmployee))
+                        .content(requstJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("zs"))

@@ -1,5 +1,7 @@
 package com.rest.springbootemployee.companytest;
 
+import com.rest.springbootemployee.controller.EmployeeRequest;
+import com.rest.springbootemployee.controller.EmployeeResponse;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
@@ -65,7 +67,6 @@ public class CompanyControllerTests {
                 "    \"companyName\": \"test\",\n" +
                 "    \"employees\": []\n" +
                 "}";
-
         // when & then
         client.perform(MockMvcRequestBuilders.post("/companies")
                         .contentType(MediaType.APPLICATION_JSON)

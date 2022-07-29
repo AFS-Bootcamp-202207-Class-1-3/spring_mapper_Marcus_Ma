@@ -1,7 +1,9 @@
 package com.rest.springbootemployee.controller;
 
+import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @RequestMapping("employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -33,8 +37,10 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee saveEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public EmployeeResponse saveEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
+        EmployeeResponse employeeResponse = employeeMapper.toResponse(employeeService.addEmployee(employee));
+        return employeeResponse;
     }
 
     @PutMapping("/{id}")
