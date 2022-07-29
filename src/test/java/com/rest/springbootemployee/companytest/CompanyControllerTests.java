@@ -5,6 +5,7 @@ import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,7 @@ public class CompanyControllerTests {
     void should_return_rightCompany_when_updateCompany_given_company_Id() throws Exception {
         // given & when
         Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
-        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
+//        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
         String employee = "[\n" +
                 "    {\n" +
                 "        \"id\": 1,\n" +
@@ -127,7 +128,7 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(2)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(1)));
     }
 
     @Test
