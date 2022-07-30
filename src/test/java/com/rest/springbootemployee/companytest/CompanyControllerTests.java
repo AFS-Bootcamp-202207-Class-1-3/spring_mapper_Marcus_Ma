@@ -1,5 +1,7 @@
 package com.rest.springbootemployee.companytest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rest.springbootemployee.controller.CompanyRequest;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
@@ -59,15 +61,17 @@ public class CompanyControllerTests {
     @Test
     void should_return_company_when_create_company_given_company() throws Exception {
         // given
-        String newCompany = "{\n" +
-                "    \"id\": 1,\n" +
-                "    \"name\": \"test\",\n" +
-                "    \"employees\": []\n" +
-                "}";
+        List<Employee> employeeList = new ArrayList<>();
+        CompanyRequest companyRequest = new CompanyRequest();
+        companyRequest.setName("test");
+        companyRequest.setEmployees(employeeList);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requstJson = objectMapper.writeValueAsString(companyRequest);
+
         // when & then
         client.perform(MockMvcRequestBuilders.post("/companies")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(newCompany))
+                        .content(requstJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("test"))
