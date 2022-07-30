@@ -3,7 +3,6 @@ package com.rest.springbootemployee.controller;
 import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +13,11 @@ import java.util.List;
 @RequestMapping("employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
-    @Autowired
-    private EmployeeMapper employeeMapper;
+    private final EmployeeMapper employeeMapper;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, EmployeeMapper employeeMapper) {
         this.employeeService = employeeService;
+        this.employeeMapper = employeeMapper;
     }
 
     @GetMapping
@@ -48,13 +47,13 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeResponse saveEmployee(@RequestBody EmployeeRequest employeeRequest) {
         Employee employee = employeeMapper.toEntity(employeeRequest);
-        EmployeeResponse employeeResponse = employeeMapper.toResponse(employeeService.addEmployee(employee));
-        return employeeResponse;
+        return employeeMapper.toResponse(employeeService.addEmployee(employee));
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody Employee employee) {
-        return employeeService.update(id, employee);
+    public EmployeeResponse updateEmployeeById(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
+        return employeeMapper.toResponse(employeeService.update(id, employee));
     }
 
     @DeleteMapping("/{id}")
