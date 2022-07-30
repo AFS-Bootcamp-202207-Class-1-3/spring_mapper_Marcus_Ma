@@ -3,7 +3,6 @@ package com.rest.springbootemployee.service;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.exception.NotFoundException;
-import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,12 +11,9 @@ import java.util.List;
 
 @Service
 public class CompanyService {
-    private final CompanyRepository companyRepository;
 
     private final JpaCompanyRepository jpaCompanyRepository;
-
-    public CompanyService(CompanyRepository companyRepository,JpaCompanyRepository jpaCompanyRepository) {
-        this.companyRepository = companyRepository;
+    public CompanyService(JpaCompanyRepository jpaCompanyRepository) {
         this.jpaCompanyRepository = jpaCompanyRepository;
     }
 

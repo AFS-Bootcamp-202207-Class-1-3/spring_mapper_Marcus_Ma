@@ -39,8 +39,11 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/employees")
-    public List<Employee> getCompanyAllEmployeesByCompanyId(@PathVariable Integer id){
-        return companyService.findCompanyAllEmployeesByCompanyId(id);
+    public List<EmployeeResponse> getCompanyAllEmployeesByCompanyId(@PathVariable Integer id){
+        List<EmployeeResponse> employeeResponseList = new ArrayList<>();
+        List<Employee> employees = companyService.findCompanyAllEmployeesByCompanyId(id);
+        employees.forEach(employee -> employeeResponseList.add(employeeMapper.toResponse(employee)));
+        return employeeResponseList;
     }
 
     @GetMapping(params = {"page","pageSize"})
