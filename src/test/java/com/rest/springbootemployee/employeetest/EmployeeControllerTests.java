@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -61,13 +60,6 @@ class EmployeeControllerTests {
     @Test
     void should_return_employee_when_create_employee_given_employee() throws Exception {
         // given
-        String newEmployee = "{\n" +
-                "    \"id\": 12,\n" +
-                "    \"name\": \"zs\",\n" +
-                "    \"age\": 20,\n" +
-                "    \"gender\": \"Male\",\n" +
-                "    \"salary\": 10000\n" +
-                "}";
         EmployeeRequest employeeRequest = new EmployeeRequest();
         employeeRequest.setName("zs");
         employeeRequest.setAge(20);
@@ -127,17 +119,15 @@ class EmployeeControllerTests {
         // given & when
         Employee originEmployee = jpaEmployeeRepository
                                 .save(new Employee(1, "Lily", 20, "Female", 11000,companyId));
-        String employee = "{\n" +
-                "    \"id\": 12,\n" +
-                "    \"name\": \"zs\",\n" +
-                "    \"age\": 20,\n" +
-                "    \"gender\": \"Male\",\n" +
-                "    \"salary\": 10000\n" +
-                "}";
+        EmployeeRequest employeeRequest = new EmployeeRequest();
+        employeeRequest.setSalary(10000);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requstJson = objectMapper.writeValueAsString(employeeRequest);
 //        then
+
         client.perform(MockMvcRequestBuilders.put("/employees/{id}",originEmployee.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(employee))
+                        .content(requstJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(20))
@@ -166,7 +156,7 @@ class EmployeeControllerTests {
         jpaEmployeeRepository.save(new Employee(3, "Lily", 20, "Male", 8888,companyId));
         jpaEmployeeRepository.save(new Employee(4, "Lily", 20, "Male", 7777,companyId));
         jpaEmployeeRepository.save(new Employee(5, "Lily", 20, "Male", 6666,companyId));
-        List<Employee> employees = jpaEmployeeRepository.findAll();
+
         client.perform(MockMvcRequestBuilders.get("/employees?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
