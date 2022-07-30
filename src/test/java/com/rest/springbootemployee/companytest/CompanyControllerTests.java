@@ -2,6 +2,7 @@ package com.rest.springbootemployee.companytest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.springbootemployee.controller.CompanyRequest;
+import com.rest.springbootemployee.controller.EmployeeRequest;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
@@ -112,21 +113,19 @@ public class CompanyControllerTests {
     void should_return_rightCompany_when_updateCompany_given_company_Id() throws Exception {
         // given & when
         Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
-//        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
-        String employee = "[\n" +
-                "    {\n" +
-                "        \"id\": 1,\n" +
-                "        \"name\": \"Lily\",\n" +
-                "        \"age\": 20,\n" +
-                "        \"gender\": \"Female\",\n" +
-                "        \"salary\": 11000,\n" +
-                "        \"companyId\":"+company.getId()+"\n" +
-                "    }\n" +
-                "]";
+        List<EmployeeRequest> employeeRequests = new ArrayList<>();
+        EmployeeRequest employeeRequest = new EmployeeRequest();
+        employeeRequest.setName("test");
+        employeeRequest.setCompanyId(company.getId());
+        employeeRequest.setSalary(10000);
+        employeeRequest.setGender("Male");
+        employeeRequests.add(employeeRequest);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requstJson = objectMapper.writeValueAsString(employeeRequests);
 //        then
         client.perform(MockMvcRequestBuilders.put("/companies/{id}",company.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(employee))
+                        .content(requstJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("spring"))

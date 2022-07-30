@@ -1,9 +1,11 @@
 package com.rest.springbootemployee.controller;
 
 import com.rest.springbootemployee.controller.mapper.CompanyMapper;
+import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,9 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
+
+    @Autowired
+    EmployeeMapper employeeMapper;
     public CompanyController(CompanyService companyService, CompanyMapper companyMapper) {
         this.companyService = companyService;
         this.companyMapper = companyMapper;
@@ -54,8 +59,10 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public Company updateCompanyById(@PathVariable Integer id,@RequestBody List<Employee> employees){
-        return companyService.update(id,employees);
+    public CompanyResponse updateCompanyById(@PathVariable Integer id,@RequestBody List<EmployeeRequest> employeeRequestList){
+        List<Employee> employeeList = new ArrayList<>();
+        employeeRequestList.forEach(employeeRequest -> employeeList.add(employeeMapper.toEntity(employeeRequest)));
+        return companyMapper.toResponse(companyService.update(id,employeeList));
     }
 
     @DeleteMapping("/{id}")
