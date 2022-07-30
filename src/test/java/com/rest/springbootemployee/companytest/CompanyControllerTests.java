@@ -1,13 +1,10 @@
 package com.rest.springbootemployee.companytest;
 
-import com.rest.springbootemployee.controller.EmployeeRequest;
-import com.rest.springbootemployee.controller.EmployeeResponse;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.repository.JpaEmployeeRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +52,7 @@ public class CompanyControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].employees", hasSize(0)));
     }
 
@@ -64,7 +61,7 @@ public class CompanyControllerTests {
         // given
         String newCompany = "{\n" +
                 "    \"id\": 1,\n" +
-                "    \"companyName\": \"test\",\n" +
+                "    \"name\": \"test\",\n" +
                 "    \"employees\": []\n" +
                 "}";
         // when & then
@@ -73,13 +70,13 @@ public class CompanyControllerTests {
                         .content(newCompany))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("test"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("test"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(0)));
 
         // should
         List<Company> allCompanies = jpaCompanyRepository.findAll();
         assertThat(allCompanies, hasSize(1));
-        assertThat(allCompanies.get(0).getCompanyName(), equalTo("test"));
+        assertThat(allCompanies.get(0).getName(), equalTo("test"));
     }
 
     @Test
@@ -90,7 +87,7 @@ public class CompanyControllerTests {
         client.perform(MockMvcRequestBuilders.get("/companies/{id}",company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(0)));
         client.perform(MockMvcRequestBuilders.get("/companies/2"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -128,7 +125,7 @@ public class CompanyControllerTests {
                         .content(employee))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value("spring"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("spring"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees", hasSize(1)));
     }
 
@@ -142,12 +139,12 @@ public class CompanyControllerTests {
         client.perform(MockMvcRequestBuilders.get("/companies?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].companyName").value("spring"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("spring"));
 
         client.perform(MockMvcRequestBuilders.get("/companies?page=2&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].companyName").value("testD"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("testD"));
     }
 
     @Test
