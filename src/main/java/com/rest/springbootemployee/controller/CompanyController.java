@@ -1,25 +1,32 @@
 package com.rest.springbootemployee.controller;
 
+import com.rest.springbootemployee.controller.mapper.CompanyMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("companies")
 public class CompanyController {
     private final CompanyService companyService;
-
-    public CompanyController(CompanyService companyService) {
+    private final CompanyMapper companyMapper;
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper) {
         this.companyService = companyService;
+        this.companyMapper = companyMapper;
     }
 
     @GetMapping
-    public List<Company> getAllCompanies(){
-        return companyService.findAll();
+    public List<CompanyResponse> getAllCompanies(){
+        List<CompanyResponse> companyResponseList = new ArrayList<>();
+        List<Company> companyList =  companyService.findAll();
+        companyList.forEach(company -> companyResponseList.add(companyMapper.toResponse(company)));
+        return companyResponseList;
     }
 
     @GetMapping("/{id}")
