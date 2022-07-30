@@ -20,57 +20,58 @@ public class CompanyController {
 
     @Autowired
     EmployeeMapper employeeMapper;
+
     public CompanyController(CompanyService companyService, CompanyMapper companyMapper) {
         this.companyService = companyService;
         this.companyMapper = companyMapper;
     }
 
     @GetMapping
-    public List<CompanyResponse> getAllCompanies(){
+    public List<CompanyResponse> getAllCompanies() {
         List<CompanyResponse> companyResponseList = new ArrayList<>();
-        List<Company> companyList =  companyService.findAll();
+        List<Company> companyList = companyService.findAll();
         companyList.forEach(company -> companyResponseList.add(companyMapper.toResponse(company)));
         return companyResponseList;
     }
 
     @GetMapping("/{id}")
-    public CompanyResponse getCompanyById(@PathVariable Integer id){
+    public CompanyResponse getCompanyById(@PathVariable Integer id) {
         return companyMapper.toResponse(companyService.findCompanyById(id));
     }
 
     @GetMapping("/{id}/employees")
-    public List<EmployeeResponse> getCompanyAllEmployeesByCompanyId(@PathVariable Integer id){
+    public List<EmployeeResponse> getCompanyAllEmployeesByCompanyId(@PathVariable Integer id) {
         List<EmployeeResponse> employeeResponseList = new ArrayList<>();
         List<Employee> employees = companyService.findCompanyAllEmployeesByCompanyId(id);
         employees.forEach(employee -> employeeResponseList.add(employeeMapper.toResponse(employee)));
         return employeeResponseList;
     }
 
-    @GetMapping(params = {"page","pageSize"})
-    public List<CompanyResponse> getCompaniesByPageAndPageSize(@RequestParam Integer page,@RequestParam Integer pageSize){
+    @GetMapping(params = {"page", "pageSize"})
+    public List<CompanyResponse> getCompaniesByPageAndPageSize(@RequestParam Integer page, @RequestParam Integer pageSize) {
         List<CompanyResponse> companyResponseList = new ArrayList<>();
-        List<Company> companyList =  companyService.findCompaniesByPageAndPageSize(page,pageSize);
+        List<Company> companyList = companyService.findCompaniesByPageAndPageSize(page, pageSize);
         companyList.forEach(company -> companyResponseList.add(companyMapper.toResponse(company)));
         return companyResponseList;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompanyResponse saveCompany(@RequestBody CompanyRequest companyRequest){
+    public CompanyResponse saveCompany(@RequestBody CompanyRequest companyRequest) {
         Company company = companyMapper.toEntity(companyRequest);
         return companyMapper.toResponse(companyService.addCompany(company));
     }
 
     @PutMapping("/{id}")
-    public CompanyResponse updateCompanyById(@PathVariable Integer id,@RequestBody List<EmployeeRequest> employeeRequestList){
+    public CompanyResponse updateCompanyById(@PathVariable Integer id, @RequestBody List<EmployeeRequest> employeeRequestList) {
         List<Employee> employeeList = new ArrayList<>();
         employeeRequestList.forEach(employeeRequest -> employeeList.add(employeeMapper.toEntity(employeeRequest)));
-        return companyMapper.toResponse(companyService.update(id,employeeList));
+        return companyMapper.toResponse(companyService.update(id, employeeList));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCompanyById(@PathVariable Integer id){
+    public void deleteCompanyById(@PathVariable Integer id) {
         companyService.deleteCompanyById(id);
     }
 }

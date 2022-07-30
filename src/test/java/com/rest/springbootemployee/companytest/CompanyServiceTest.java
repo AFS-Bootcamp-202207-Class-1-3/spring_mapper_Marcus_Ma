@@ -2,8 +2,6 @@ package com.rest.springbootemployee.companytest;
 
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
-import com.rest.springbootemployee.repository.CompanyRepository;
-import com.rest.springbootemployee.repository.EmployeeRepository;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
 import com.rest.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
@@ -29,8 +27,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class CompanyServiceTest {
-    @Spy
-    CompanyRepository companyRepository = new CompanyRepository(new EmployeeRepository());
     @Spy
     JpaCompanyRepository jpaCompanyRepository;
     @InjectMocks
@@ -75,7 +71,7 @@ public class CompanyServiceTest {
         int id = 1;
         Company company = new Company(id, "spring", Collections.emptyList());
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000, company.getId()));
         company.setEmployees(employees);
         given(jpaCompanyRepository.findById(id)).willReturn(Optional.of(company));
         // when
@@ -92,7 +88,7 @@ public class CompanyServiceTest {
         Company company = new Company(1, "spring", employees);
         List<Company> companies = new ArrayList<>();
         companies.add(company);
-        given(jpaCompanyRepository.findAll(PageRequest.of(0,5))).willReturn(new PageImpl<>(companies));
+        given(jpaCompanyRepository.findAll(PageRequest.of(0, 5))).willReturn(new PageImpl<>(companies));
         // when
         List<Company> actualCompanies = companyService.findCompaniesByPageAndPageSize(1, 5);
         // then
@@ -125,16 +121,16 @@ public class CompanyServiceTest {
     void should_return_updatedCompany_when_update_given_company() {
         // given
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000,1));
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000, 1));
         Company oldCompany = new Company(1, "spring", employees);
         List<Employee> newEmployee = new ArrayList<>();
-        employees.add(new Employee(2, "Lily", 20, "Female", 11000,1));
+        employees.add(new Employee(2, "Lily", 20, "Female", 11000, 1));
         given(jpaCompanyRepository.findById(1)).willReturn(Optional.of(oldCompany));
 //        service
         given(jpaCompanyRepository.save(oldCompany)).willReturn(oldCompany);
         // when
         Company company = companyService.update(1, newEmployee);
         // then
-        assertThat(company.getEmployees().size(),equalTo(2));
+        assertThat(company.getEmployees().size(), equalTo(2));
     }
 }

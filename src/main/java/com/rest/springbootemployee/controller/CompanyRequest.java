@@ -19,9 +19,11 @@ public class CompanyRequest {
     public void setName(String name) {
         this.name = name;
     }
+
     public List<Employee> getEmployees() {
         return employees;
     }
+
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }

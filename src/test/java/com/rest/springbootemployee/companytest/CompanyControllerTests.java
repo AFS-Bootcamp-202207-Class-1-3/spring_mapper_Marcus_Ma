@@ -39,6 +39,7 @@ public class CompanyControllerTests {
     JpaCompanyRepository jpaCompanyRepository;
     @Autowired
     JpaEmployeeRepository jpaEmployeeRepository;
+
     @BeforeEach
     void clearDB() {
         companyRepository.clearAll();
@@ -50,7 +51,7 @@ public class CompanyControllerTests {
     void should_return_allCompanies_when_getAllCompanies_given_none() throws Exception {
 //        given
 
-        Company company =  jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
+        Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
         client.perform(MockMvcRequestBuilders.get("/companies"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(1)))
@@ -87,9 +88,9 @@ public class CompanyControllerTests {
     @Test
     void should_return_rightCompany_when_getCompanyById_given_Id() throws Exception {
 //        given
-        Company company =  jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
+        Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
 //        when then
-        client.perform(MockMvcRequestBuilders.get("/companies/{id}",company.getId()))
+        client.perform(MockMvcRequestBuilders.get("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("spring"))
@@ -102,7 +103,7 @@ public class CompanyControllerTests {
     void should_return_none_when_deleteCompanyById_given_Id() throws Exception {
         // given & when
         Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
-        client.perform(MockMvcRequestBuilders.delete("/companies/{id}",company.getId()))
+        client.perform(MockMvcRequestBuilders.delete("/companies/{id}", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
         // should
         List<Company> companies = jpaCompanyRepository.findAll();
@@ -123,7 +124,7 @@ public class CompanyControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         String requstJson = objectMapper.writeValueAsString(employeeRequests);
 //        then
-        client.perform(MockMvcRequestBuilders.put("/companies/{id}",company.getId())
+        client.perform(MockMvcRequestBuilders.put("/companies/{id}", company.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requstJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -155,14 +156,14 @@ public class CompanyControllerTests {
         // given
         Company company = jpaCompanyRepository.save(new Company(1, "spring", Collections.emptyList()));
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
-        employees.add(new Employee(2, "Lily", 20, "Female", 11000,company.getId()));
+        employees.add(new Employee(1, "Lily", 20, "Female", 11000, company.getId()));
+        employees.add(new Employee(2, "Lily", 20, "Female", 11000, company.getId()));
         company.addEmployees(employees);
-        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000,company.getId()));
-        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Female", 11000,company.getId()));
+        jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000, company.getId()));
+        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Female", 11000, company.getId()));
         jpaCompanyRepository.save(company);
         // when then
-        client.perform(MockMvcRequestBuilders.get("/companies/{id}/employees",company.getId()))
+        client.perform(MockMvcRequestBuilders.get("/companies/{id}/employees", company.getId()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").value(2))

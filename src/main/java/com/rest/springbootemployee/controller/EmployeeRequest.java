@@ -6,6 +6,7 @@ public class EmployeeRequest {
     private String gender;
     private Integer salary;
     private Integer companyId;
+
     public EmployeeRequest() {
     }
 

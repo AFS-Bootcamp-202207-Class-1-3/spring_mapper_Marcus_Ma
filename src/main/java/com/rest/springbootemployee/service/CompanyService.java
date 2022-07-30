@@ -13,6 +13,7 @@ import java.util.List;
 public class CompanyService {
 
     private final JpaCompanyRepository jpaCompanyRepository;
+
     public CompanyService(JpaCompanyRepository jpaCompanyRepository) {
         this.jpaCompanyRepository = jpaCompanyRepository;
     }
@@ -20,19 +21,20 @@ public class CompanyService {
     public List<Company> findAll() {
         return jpaCompanyRepository.findAll();
     }
+
     public Company findCompanyById(int id) {
         return jpaCompanyRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(Company.class.getSimpleName()));
+                .orElseThrow(() -> new NotFoundException(Company.class.getSimpleName()));
     }
 
     public List<Employee> findCompanyAllEmployeesByCompanyId(int id) {
         Company company = jpaCompanyRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(Company.class.getSimpleName()));
+                .orElseThrow(() -> new NotFoundException(Company.class.getSimpleName()));
         return company.getEmployees();
     }
 
     public List<Company> findCompaniesByPageAndPageSize(int page, int pageSize) {
-        return jpaCompanyRepository.findAll(PageRequest.of(page-1,pageSize)).toList();
+        return jpaCompanyRepository.findAll(PageRequest.of(page - 1, pageSize)).toList();
     }
 
     public void deleteCompanyById(int id) {

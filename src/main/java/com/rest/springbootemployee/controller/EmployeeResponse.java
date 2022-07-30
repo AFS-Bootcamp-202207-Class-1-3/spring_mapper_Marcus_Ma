@@ -1,7 +1,7 @@
 package com.rest.springbootemployee.controller;
 
 public class EmployeeResponse {
-    private  Integer id;
+    private Integer id;
     private String name;
     private Integer age;
     private String gender;

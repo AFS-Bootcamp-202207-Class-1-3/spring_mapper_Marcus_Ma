@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("test")
 public class EmployeeServiceTests {
     @Spy
     JpaEmployeeRepository jpaEmployeeRepository;
@@ -87,7 +89,7 @@ public class EmployeeServiceTests {
         employees.add(employee3);
         employees.add(employee4);
         employees.add(employee5);
-        given(jpaEmployeeRepository.findAll(PageRequest.of(0,5))).willReturn(new PageImpl<>(employees));
+        given(jpaEmployeeRepository.findAll(PageRequest.of(0, 5))).willReturn(new PageImpl<>(employees));
         // when
         List<Employee> actualEmployees = employeeService.findEmployeesByPage(1, 5);
         // then
