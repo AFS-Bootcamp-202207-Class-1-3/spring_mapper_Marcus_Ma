@@ -1,4 +1,4 @@
-package com.rest.springbootemployee.controller.dto;
+package com.rest.springbootemployee.dto;
 
 public class EmployeeResponse {
     private Integer id;

@@ -1,11 +1,11 @@
 package com.rest.springbootemployee.controller;
 
-import com.rest.springbootemployee.controller.dto.CompanyRequest;
-import com.rest.springbootemployee.controller.dto.CompanyResponse;
-import com.rest.springbootemployee.controller.dto.EmployeeRequest;
-import com.rest.springbootemployee.controller.dto.EmployeeResponse;
-import com.rest.springbootemployee.controller.mapper.CompanyMapper;
-import com.rest.springbootemployee.controller.mapper.EmployeeMapper;
+import com.rest.springbootemployee.dto.CompanyRequest;
+import com.rest.springbootemployee.dto.CompanyResponse;
+import com.rest.springbootemployee.dto.EmployeeRequest;
+import com.rest.springbootemployee.dto.EmployeeResponse;
+import com.rest.springbootemployee.mapper.CompanyMapper;
+import com.rest.springbootemployee.mapper.EmployeeMapper;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.service.CompanyService;
