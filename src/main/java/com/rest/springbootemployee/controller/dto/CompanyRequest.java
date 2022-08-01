@@ -1,24 +1,15 @@
-package com.rest.springbootemployee.controller;
+package com.rest.springbootemployee.controller.dto;
 
 import com.rest.springbootemployee.entity.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyResponse {
-    private Integer id;
+public class CompanyRequest {
     private String name;
     private List<Employee> employees = new ArrayList<>();
 
-    public CompanyResponse() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public CompanyRequest() {
     }
 
     public String getName() {

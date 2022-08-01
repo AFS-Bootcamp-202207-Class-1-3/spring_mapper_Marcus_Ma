@@ -1,7 +1,7 @@
 package com.rest.springbootemployee.controller.mapper;
 
-import com.rest.springbootemployee.controller.CompanyRequest;
-import com.rest.springbootemployee.controller.CompanyResponse;
+import com.rest.springbootemployee.controller.dto.CompanyRequest;
+import com.rest.springbootemployee.controller.dto.CompanyResponse;
 import com.rest.springbootemployee.entity.Company;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

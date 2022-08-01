@@ -1,7 +1,7 @@
 package com.rest.springbootemployee.employeetest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rest.springbootemployee.controller.EmployeeRequest;
+import com.rest.springbootemployee.controller.dto.EmployeeRequest;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.JpaCompanyRepository;
@@ -153,17 +153,17 @@ class EmployeeControllerTests {
 
     @Test
     void should_return_Employees_when_getEmployeesByPage_given_page_pageSize() throws Exception {
-        Employee employee1 = jpaEmployeeRepository.save(new Employee(1, "Lily", 20, "Female", 11000, companyId));
-        jpaEmployeeRepository.save(new Employee(2, "Lily", 20, "Male", 9999, companyId));
-        jpaEmployeeRepository.save(new Employee(3, "Lily", 20, "Male", 8888, companyId));
-        jpaEmployeeRepository.save(new Employee(4, "Lily", 20, "Male", 7777, companyId));
-        jpaEmployeeRepository.save(new Employee(5, "Lily", 20, "Male", 6666, companyId));
+        Employee employee1 = jpaEmployeeRepository.save(new Employee(0, "aaa", 20, "Female", 11000, companyId));
+        jpaEmployeeRepository.save(new Employee(0, "bbb", 20, "Male", 9999, companyId));
+        jpaEmployeeRepository.save(new Employee(0, "ccc", 20, "Male", 8888, companyId));
+        jpaEmployeeRepository.save(new Employee(0, "ddd", 20, "Male", 7777, companyId));
+        jpaEmployeeRepository.save(new Employee(0, "vvv", 20, "Male", 6666, companyId));
 
         client.perform(MockMvcRequestBuilders.get("/employees?page=1&pageSize=3"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(employee1.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Lily"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("aaa"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(20))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value("Female"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].salary").value(11000));
@@ -172,7 +172,7 @@ class EmployeeControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].id").isNumber())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Lily"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("vvv"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].age").value(20))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].gender").value("Male"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].salary").value(6666));

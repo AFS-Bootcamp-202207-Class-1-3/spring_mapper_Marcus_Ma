@@ -1,8 +1,8 @@
 package com.rest.springbootemployee.companytest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rest.springbootemployee.controller.CompanyRequest;
-import com.rest.springbootemployee.controller.EmployeeRequest;
+import com.rest.springbootemployee.controller.dto.CompanyRequest;
+import com.rest.springbootemployee.controller.dto.EmployeeRequest;
 import com.rest.springbootemployee.entity.Company;
 import com.rest.springbootemployee.entity.Employee;
 import com.rest.springbootemployee.repository.CompanyRepository;

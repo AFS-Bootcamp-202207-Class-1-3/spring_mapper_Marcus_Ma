@@ -1,13 +1,14 @@
-package com.rest.springbootemployee.controller;
+package com.rest.springbootemployee.controller.dto;
 
-public class EmployeeRequest {
+public class EmployeeResponse {
+    private Integer id;
     private String name;
     private Integer age;
     private String gender;
     private Integer salary;
     private Integer companyId;
 
-    public EmployeeRequest() {
+    public EmployeeResponse() {
     }
 
     public String getName() {
@@ -49,4 +50,13 @@ public class EmployeeRequest {
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 }
